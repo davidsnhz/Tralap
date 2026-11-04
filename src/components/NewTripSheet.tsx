@@ -28,7 +28,7 @@ export function NewTripSheet({ onClose, onCreate, templateCount }: NewTripSheetP
       style={{
         position: "absolute",
         inset: 0,
-        background: "rgba(20,20,20,.42)",
+        background: "rgba(89,70,56,.42)",
         display: "flex",
         alignItems: "flex-end",
         zIndex: 10,
@@ -37,7 +37,7 @@ export function NewTripSheet({ onClose, onCreate, templateCount }: NewTripSheetP
       <div
         className="anim-sheet"
         style={{
-          background: C.blanco,
+          background: C.white,
           borderRadius: "24px 24px 0 0",
           width: "100%",
           padding: "24px 24px 28px",
@@ -53,13 +53,13 @@ export function NewTripSheet({ onClose, onCreate, templateCount }: NewTripSheetP
             marginBottom: 18,
           }}
         >
-          <h2 className="display" style={{ margin: 0, fontSize: 22, fontWeight: 700, color: C.negro }}>
+          <h2 className="display" style={{ margin: 0, fontSize: 22, fontWeight: 700, color: C.walnut }}>
             Nuevo viaje
           </h2>
           <button
             onClick={onClose}
             style={{
-              background: C.fondo,
+              background: C.taupe,
               border: "none",
               borderRadius: 10,
               width: 32,
@@ -70,11 +70,11 @@ export function NewTripSheet({ onClose, onCreate, templateCount }: NewTripSheetP
               cursor: "pointer",
             }}
           >
-            <X size={16} color={C.gris} />
+            <X size={16} color={C.walnut} />
           </button>
         </div>
 
-        <label style={{ fontSize: 12, fontWeight: 700, color: C.gris, letterSpacing: 1 }}>
+        <label style={{ fontSize: 12, fontWeight: 700, color: C.mocha, letterSpacing: 1 }}>
           DESTINO
         </label>
         <input
@@ -87,16 +87,16 @@ export function NewTripSheet({ onClose, onCreate, templateCount }: NewTripSheetP
             marginBottom: 16,
             padding: "13px 16px",
             borderRadius: 12,
-            border: `1.5px solid ${C.linea}`,
-            background: C.fondo,
+            border: `1.5px solid ${C.taupe}`,
+            background: C.white,
             fontSize: 15,
             fontFamily: "'Inter', sans-serif",
-            color: C.negro,
+            color: C.walnut,
             outline: "none",
           }}
         />
 
-        <label style={{ fontSize: 12, fontWeight: 700, color: C.gris, letterSpacing: 1 }}>
+        <label style={{ fontSize: 12, fontWeight: 700, color: C.mocha, letterSpacing: 1 }}>
           TIPO DE VIAJE
         </label>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, margin: "8px 0 16px" }}>
@@ -116,21 +116,21 @@ export function NewTripSheet({ onClose, onCreate, templateCount }: NewTripSheetP
                   fontSize: 14,
                   fontWeight: 600,
                   fontFamily: "'Inter', sans-serif",
-                  border: `1.5px solid ${active ? C.negro : C.linea}`,
-                  background: active ? C.negro : C.blanco,
-                  color: active ? C.blanco : C.gris,
+                  border: `1.5px solid ${active ? C.walnut : C.taupe}`,
+                  background: active ? C.walnut : C.white,
+                  color: active ? C.white : C.mocha,
                   transition: "all .2s",
                 }}
               >
-                <t.icon size={16} color={active ? C.marron : C.grisSuave} /> {t.label}
+                <t.icon size={16} /> {t.label}
               </button>
             );
           })}
         </div>
 
-        <label style={{ fontSize: 12, fontWeight: 700, color: C.gris, letterSpacing: 1 }}>
+        <label style={{ fontSize: 12, fontWeight: 700, color: C.mocha, letterSpacing: 1 }}>
           ACTIVIDADES{" "}
-          <span style={{ color: C.grisSuave, fontWeight: 500, letterSpacing: 0 }}>
+          <span style={{ color: C.mocha, fontWeight: 500, letterSpacing: 0 }}>
             (opcional — añaden sus propios ítems)
           </span>
         </label>
@@ -151,14 +151,14 @@ export function NewTripSheet({ onClose, onCreate, templateCount }: NewTripSheetP
                   fontSize: 13,
                   fontWeight: 600,
                   fontFamily: "'Inter', sans-serif",
-                  border: `1.5px solid ${active ? C.marron : C.linea}`,
-                  background: active ? C.negro : C.blanco,
-                  color: active ? C.blanco : C.gris,
+                  border: `1.5px solid ${active ? C.walnut : C.taupe}`,
+                  background: active ? C.walnut : C.taupe,
+                  color: active ? C.white : C.walnut,
                   transform: active ? "scale(1.03)" : "scale(1)",
                   transition: "all .2s cubic-bezier(.34,1.3,.64,1)",
                 }}
               >
-                <a.icon size={14} color={active ? C.marron : undefined} />
+                <a.icon size={14} />
                 {a.label}
                 {active && <Check size={13} strokeWidth={3} className="anim-pop" />}
               </button>
@@ -166,9 +166,9 @@ export function NewTripSheet({ onClose, onCreate, templateCount }: NewTripSheetP
           })}
         </div>
 
-        <label style={{ fontSize: 12, fontWeight: 700, color: C.gris, letterSpacing: 1 }}>
+        <label style={{ fontSize: 12, fontWeight: 700, color: C.mocha, letterSpacing: 1 }}>
           DURACIÓN —{" "}
-          <span className="display" style={{ color: C.marron, fontSize: 13 }}>
+          <span className="display" style={{ color: C.mocha, fontSize: 13 }}>
             {countLabel(days, "día", "días")}
           </span>
         </label>
@@ -178,7 +178,7 @@ export function NewTripSheet({ onClose, onCreate, templateCount }: NewTripSheetP
           max="21"
           value={days}
           onChange={(e) => setDays(+e.target.value)}
-          style={{ width: "100%", margin: "12px 0 16px", accentColor: C.marron }}
+          style={{ width: "100%", margin: "12px 0 16px", accentColor: C.mocha }}
         />
 
         <div
@@ -189,22 +189,22 @@ export function NewTripSheet({ onClose, onCreate, templateCount }: NewTripSheetP
             padding: "13px 16px",
             borderRadius: 14,
             marginBottom: 18,
-            background: C.fondo,
-            border: `1.5px solid ${useTemplate && templateCount > 0 ? C.marron : C.linea}`,
+            background: C.offWhite,
+            border: `1.5px solid ${useTemplate && templateCount > 0 ? C.mocha : C.taupe}`,
             opacity: templateCount === 0 ? 0.55 : 1,
             transition: "border-color .25s",
           }}
         >
           <Bookmark
             size={17}
-            color={useTemplate && templateCount > 0 ? C.marron : C.grisSuave}
+            color={useTemplate && templateCount > 0 ? C.mocha : C.taupe}
             style={{ transition: "color .25s" }}
           />
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 14, fontWeight: 600, color: C.negro }}>
+            <div style={{ fontSize: 14, fontWeight: 600, color: C.walnut }}>
               Incluir mi plantilla
             </div>
-            <div style={{ fontSize: 12, color: C.gris, marginTop: 1 }}>
+            <div style={{ fontSize: 12, color: C.walnut, marginTop: 1 }}>
               {templateCount === 0
                 ? "Aún no has guardado imprescindibles"
                 : `${countLabel(templateCount, "imprescindible", "imprescindibles")} → Esenciales`}
@@ -232,13 +232,13 @@ export function NewTripSheet({ onClose, onCreate, templateCount }: NewTripSheetP
             padding: "16px 0",
             borderRadius: 14,
             border: "none",
-            background: name.trim() ? C.negro : C.linea,
-            color: name.trim() ? C.blanco : C.grisSuave,
+            background: name.trim() ? C.walnut : C.taupe,
+            color: name.trim() ? C.white : C.mocha,
             fontSize: 15,
             fontWeight: 700,
             fontFamily: "'Space Grotesk', sans-serif",
             cursor: name.trim() ? "pointer" : "default",
-            boxShadow: name.trim() ? "0 6px 16px rgba(20,20,20,.25)" : "none",
+            boxShadow: name.trim() ? "0 6px 16px rgba(89,70,56,.25)" : "none",
             transition: "all .25s",
           }}
         >

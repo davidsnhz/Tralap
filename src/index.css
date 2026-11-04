@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ============ ESTILOS GLOBALES (fuente: tralap-mockup-v6.jsx) ============ */
+/* ============ ESTILOS GLOBALES ============ */
 
 html,
 body {
@@ -17,7 +17,7 @@ body {
 
 body {
   margin: 0;
-  background: #111113;
+  background: #f9f7f4;
   overflow: hidden;
 }
 
@@ -121,7 +121,7 @@ body {
 }
 
 .tralap input::placeholder {
-  color: #a3a3a8;
+  color: #8a705b;
 }
 
 @media (prefers-reduced-motion: reduce) {

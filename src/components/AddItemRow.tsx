@@ -29,11 +29,11 @@ export function AddItemRow({
           marginTop: 4,
           padding: "4px 4px 4px 16px",
           borderRadius: 14,
-          border: `1.5px dashed ${C.linea}`,
-          background: C.blanco,
+          border: `1.5px dashed ${C.taupe}`,
+          background: C.white,
         }}
       >
-        <Plus size={17} color={C.grisSuave} />
+        <Plus size={17} color={C.mocha} />
         <input
           value={value}
           onChange={(e) => {
@@ -50,7 +50,7 @@ export function AddItemRow({
             background: "transparent",
             fontSize: 15,
             fontFamily: "'Inter', sans-serif",
-            color: C.negro,
+            color: C.walnut,
             padding: "12px 0",
           }}
         />
@@ -61,8 +61,8 @@ export function AddItemRow({
             borderRadius: 10,
             padding: "9px 16px",
             cursor: value.trim() ? "pointer" : "default",
-            background: value.trim() ? C.negro : C.fondo,
-            color: value.trim() ? C.blanco : C.grisSuave,
+            background: value.trim() ? C.walnut : C.taupe,
+            color: value.trim() ? C.white : C.mocha,
             fontSize: 13.5,
             fontWeight: 600,
             fontFamily: "'Inter', sans-serif",

@@ -37,24 +37,18 @@ export function Home({
   return (
     <div className="anim-fade" style={{ padding: "28px 24px 30px" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
-        <div
-          style={{
-            width: 42,
-            height: 42,
-            borderRadius: 13,
-            background: C.negro,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Luggage size={22} color={C.marron} />
-        </div>
-        <h1 className="display" style={{ margin: 0, fontSize: 30, fontWeight: 700, color: C.negro }}>
+        <img
+          src="/pwa-192x192.png"
+          alt=""
+          width={46}
+          height={46}
+          style={{ borderRadius: "25.5%", boxShadow: "0 1px 4px rgba(89,70,56,.28)" }}
+        />
+        <h1 className="display" style={{ margin: 0, fontSize: 30, fontWeight: 700, color: C.walnut }}>
           Tralap
         </h1>
       </div>
-      <p style={{ margin: "6px 0 22px", fontSize: 14, color: C.gris }}>
+      <p style={{ margin: "6px 0 22px", fontSize: 14, color: C.walnut }}>
         Haz la maleta sin olvidar nada.
       </p>
 
@@ -77,15 +71,15 @@ export function Home({
                 fontSize: 14.5,
                 fontWeight: 700,
                 fontFamily: "'Space Grotesk', sans-serif",
-                border: `1px solid ${active ? C.negro : C.linea}`,
-                background: active ? C.negro : C.blanco,
-                color: active ? C.blanco : C.gris,
-                boxShadow: active ? "0 4px 12px rgba(20,20,20,.22)" : "none",
+                border: `1px solid ${active ? C.walnut : C.taupe}`,
+                background: active ? C.walnut : C.white,
+                color: active ? C.white : C.mocha,
+                boxShadow: active ? "0 4px 12px rgba(89,70,56,.22)" : "none",
                 transform: active ? "translateY(-1px)" : "none",
                 transition: "all .25s cubic-bezier(.22,1,.36,1)",
               }}
             >
-              <t.icon size={16} color={active ? C.marron : undefined} /> {t.label}
+              <t.icon size={16} /> {t.label}
             </button>
           );
         })}
@@ -105,11 +99,11 @@ export function Home({
           >
             <span
               className="display"
-              style={{ fontSize: 12.5, fontWeight: 700, color: C.negro, letterSpacing: 1.5 }}
+              style={{ fontSize: 12.5, fontWeight: 700, color: C.walnut, letterSpacing: 1.5 }}
             >
               MIS VIAJES
             </span>
-            <span style={{ fontSize: 12.5, color: C.grisSuave, fontWeight: 500 }}>
+            <span style={{ fontSize: 12.5, color: C.walnut, fontWeight: 500 }}>
               {countLabel(trips.length, "activo", "activos")}
             </span>
           </div>
@@ -129,7 +123,7 @@ export function Home({
             <p
               style={{
                 fontSize: 13.5,
-                color: C.grisSuave,
+                color: C.walnut,
                 textAlign: "center",
                 padding: "18px 0 10px",
               }}
@@ -137,7 +131,7 @@ export function Home({
               Aún no tienes viajes. Crea el primero y Tralap preparará tu lista.
             </p>
           ) : (
-            <p style={{ fontSize: 11.5, color: C.grisSuave, textAlign: "center", margin: "2px 0 10px" }}>
+            <p style={{ fontSize: 11.5, color: C.walnut, textAlign: "center", margin: "2px 0 10px" }}>
               Desliza una tarjeta hacia la izquierda para renombrar o eliminar
             </p>
           )}
@@ -148,7 +142,7 @@ export function Home({
               width: "100%",
               padding: "16px 0",
               borderRadius: 16,
-              border: `2px dashed ${C.grisSuave}`,
+              border: `2px dashed ${C.mocha}`,
               background: "transparent",
               cursor: "pointer",
               display: "flex",
@@ -157,21 +151,19 @@ export function Home({
               gap: 8,
               fontSize: 15,
               fontWeight: 700,
-              color: C.gris,
+              color: C.walnut,
               fontFamily: "'Space Grotesk', sans-serif",
               transition: "all .2s",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = C.blanco;
+              e.currentTarget.style.background = C.white;
               e.currentTarget.style.borderStyle = "solid";
-              e.currentTarget.style.borderColor = C.marron;
-              e.currentTarget.style.color = C.marron;
+              e.currentTarget.style.borderColor = C.walnut;
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = "transparent";
               e.currentTarget.style.borderStyle = "dashed";
-              e.currentTarget.style.borderColor = C.grisSuave;
-              e.currentTarget.style.color = C.gris;
+              e.currentTarget.style.borderColor = C.mocha;
             }}
           >
             <Plus size={18} /> Nuevo viaje

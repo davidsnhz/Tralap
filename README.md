@@ -57,7 +57,7 @@ npm run preview
 
 ## Regenerar iconos PWA
 
-Los PNG de `public/` se generan a partir de `public/favicon.svg` e `public/icon-maskable.svg`:
+Los PNG de `public/` se generan a partir de la foto original del logo, `assets/logo-original.webp`:
 
 ```bash
 npm run icons

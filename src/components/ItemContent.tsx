@@ -24,13 +24,13 @@ export function ItemContent({ item }: ItemContentProps) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          border: `2px solid ${item.done ? C.marron : C.grisSuave}`,
-          background: item.done ? C.marron : "transparent",
+          border: `2px solid ${C.mocha}`,
+          background: item.done ? C.mocha : "transparent",
           transition: "background .2s, border-color .2s",
         }}
       >
         {item.done && (
-          <Check size={15} color={C.blanco} strokeWidth={3.5} className="anim-pop" />
+          <Check size={15} color={C.white} strokeWidth={3.5} className="anim-pop" />
         )}
       </span>
       <span
@@ -40,9 +40,9 @@ export function ItemContent({ item }: ItemContentProps) {
           overflowWrap: "anywhere",
           fontSize: 15,
           fontWeight: 500,
-          color: item.done ? C.grisSuave : C.negro,
+          color: item.done ? C.mocha : C.walnut,
           textDecoration: item.done ? "line-through" : "none",
-          textDecorationColor: C.grisSuave,
+          textDecorationColor: C.mocha,
           transition: "color .25s",
         }}
       >
@@ -53,8 +53,8 @@ export function ItemContent({ item }: ItemContentProps) {
           style={{
             fontSize: 13,
             fontWeight: 700,
-            color: item.done ? C.grisSuave : C.marron,
-            background: item.done ? "transparent" : C.fondo,
+            color: item.done ? C.mocha : C.walnut,
+            background: item.done ? "transparent" : C.taupe,
             padding: "3px 10px",
             borderRadius: 99,
             transition: "all .2s",
@@ -64,9 +64,9 @@ export function ItemContent({ item }: ItemContentProps) {
           ×{item.qty}
         </span>
       )}
-      {item.fromTemplate && !item.done && <Bookmark size={15} color={C.marron} />}
-      {ActivityIcon && !item.done && <ActivityIcon size={15} color={C.marron} />}
-      {item.suggested && !item.done && <Sparkles size={15} color={C.marron} />}
+      {item.fromTemplate && !item.done && <Bookmark size={15} color={C.mocha} />}
+      {ActivityIcon && !item.done && <ActivityIcon size={15} color={C.mocha} />}
+      {item.suggested && !item.done && <Sparkles size={15} color={C.mocha} />}
     </>
   );
 }

@@ -10,7 +10,7 @@ import {
   Undo2,
 } from "lucide-react";
 import { TRIP_TYPES } from "../data/intelligence";
-import { C, VERDE_CLARO } from "../theme/colors";
+import { C } from "../theme/colors";
 import type { PackTab, Trip, TripMode } from "../types";
 import { countLabel } from "../utils/text";
 import { AddItemRow } from "./AddItemRow";
@@ -65,7 +65,7 @@ export function TripView({
 
   return (
     <div className="anim-fade">
-      <div style={{ background: C.negro, borderRadius: "0 0 28px 28px", padding: "20px 22px 22px" }}>
+      <div style={{ background: C.walnut, borderRadius: "0 0 28px 28px", padding: "20px 22px 22px" }}>
         <button
           onClick={onBack}
           style={{
@@ -81,20 +81,20 @@ export function TripView({
             marginBottom: 18,
           }}
         >
-          <ChevronLeft size={20} color={C.blanco} />
+          <ChevronLeft size={20} color={C.white} />
         </button>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: 12 }}>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-              <TypeIcon size={15} color={C.marron} />
-              <span style={{ fontSize: 13, fontWeight: 600, color: C.marron, letterSpacing: 0.3 }}>
+              <TypeIcon size={15} color={C.taupe} />
+              <span style={{ fontSize: 13, fontWeight: 600, color: C.taupe, letterSpacing: 0.3 }}>
                 {tripType?.label} · {daysLabel}
               </span>
             </div>
-            <h1 className="display" style={{ margin: 0, fontSize: 28, fontWeight: 700, color: C.blanco, overflowWrap: "anywhere" }}>
+            <h1 className="display" style={{ margin: 0, fontSize: 28, fontWeight: 700, color: C.white, overflowWrap: "anywhere" }}>
               {trip.name}
             </h1>
-            <p style={{ margin: "8px 0 0", fontSize: 13.5, color: "rgba(255,255,255,.55)" }}>
+            <p style={{ margin: "8px 0 0", fontSize: 13.5, color: C.taupe }}>
               {mode === "ida"
                 ? pct === 100
                   ? "¡Maleta lista!"
@@ -108,7 +108,7 @@ export function TripView({
                     )}
             </p>
           </div>
-          <ProgressRing pct={pct} accent={mode === "vuelta" ? VERDE_CLARO : undefined} />
+          <ProgressRing pct={pct} />
         </div>
 
         <div
@@ -128,7 +128,7 @@ export function TripView({
               bottom: 4,
               width: "calc(50% - 4px)",
               left: mode === "ida" ? 4 : "calc(50%)",
-              background: C.marron,
+              background: C.mocha,
               borderRadius: 9,
               transition: "left .28s cubic-bezier(.22,1,.36,1)",
             }}
@@ -152,7 +152,7 @@ export function TripView({
                 fontSize: 13,
                 fontWeight: 700,
                 fontFamily: "'Space Grotesk', sans-serif",
-                color: mode === m.id ? C.blanco : "rgba(255,255,255,.55)",
+                color: mode === m.id ? C.white : C.taupe,
                 transition: "color .25s",
               }}
             >
@@ -183,10 +183,10 @@ export function TripView({
                     fontSize: 14.5,
                     fontWeight: 700,
                     fontFamily: "'Space Grotesk', sans-serif",
-                    border: `1px solid ${active ? C.negro : C.linea}`,
-                    background: active ? C.negro : C.blanco,
-                    color: active ? C.blanco : C.gris,
-                    boxShadow: active ? "0 4px 12px rgba(20,20,20,.22)" : "none",
+                    border: `1px solid ${active ? C.walnut : C.taupe}`,
+                    background: active ? C.walnut : C.white,
+                    color: active ? C.white : C.mocha,
+                    boxShadow: active ? "0 4px 12px rgba(89,70,56,.22)" : "none",
                     transform: active ? "translateY(-1px)" : "none",
                     transition: "all .25s cubic-bezier(.22,1,.36,1)",
                   }}
@@ -201,7 +201,7 @@ export function TripView({
             <p
               style={{
                 fontSize: 12.5,
-                color: C.marron,
+                color: C.walnut,
                 fontWeight: 600,
                 margin: "6px 4px 12px",
                 display: "flex",
@@ -224,7 +224,7 @@ export function TripView({
               />
             ))}
             <AddItemRow onAdd={(name) => onAddItem(tab, name)} />
-            <p style={{ fontSize: 11.5, color: C.grisSuave, textAlign: "center", margin: "12px 0 0" }}>
+            <p style={{ fontSize: 11.5, color: C.walnut, textAlign: "center", margin: "12px 0 0" }}>
               Toca para marcar · desliza a la izquierda para eliminar
             </p>
           </div>
@@ -237,15 +237,15 @@ export function TripView({
               alignItems: "flex-start",
               gap: 12,
               padding: "14px 16px",
-              background: C.blanco,
-              border: `1px solid ${C.linea}`,
+              background: C.white,
+              border: `1px solid ${C.taupe}`,
               borderRadius: 16,
               marginBottom: 14,
             }}
           >
-            <Search size={18} color={C.verde} style={{ flexShrink: 0, marginTop: 2 }} />
-            <p style={{ margin: 0, fontSize: 13, color: C.gris, lineHeight: 1.5 }}>
-              Repasa esto <strong style={{ color: C.negro }}>antes de salir del alojamiento</strong>{" "}
+            <Search size={18} color={C.mocha} style={{ flexShrink: 0, marginTop: 2 }} />
+            <p style={{ margin: 0, fontSize: 13, color: C.mocha, lineHeight: 1.5 }}>
+              Repasa esto <strong style={{ color: C.walnut }}>antes de salir del alojamiento</strong>{" "}
               para no dejarte nada atrás.
             </p>
           </div>

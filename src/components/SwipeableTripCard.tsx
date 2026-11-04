@@ -87,8 +87,8 @@ export function SwipeableTripCard({
             border: "none",
             cursor: "pointer",
             borderRadius: 16,
-            background: C.fondo,
-            color: C.negro,
+            background: C.mocha,
+            color: C.white,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -102,7 +102,7 @@ export function SwipeableTripCard({
             transition: "opacity .2s, transform .2s",
           }}
         >
-          <Pencil size={17} color={C.marron} /> Renombrar
+          <Pencil size={17} /> Renombrar
         </button>
         <button
           onClick={handleDelete}
@@ -112,7 +112,7 @@ export function SwipeableTripCard({
             cursor: "pointer",
             borderRadius: 16,
             background: C.rojo,
-            color: C.blanco,
+            color: C.white,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -135,14 +135,14 @@ export function SwipeableTripCard({
         style={{
           transform: `translateX(${dx}px)`,
           transition: active ? "none" : "transform .3s cubic-bezier(.22,1,.36,1)",
-          background: C.blanco,
+          background: C.white,
           borderRadius: 18,
           padding: 18,
           display: "flex",
           alignItems: "center",
           gap: 16,
-          border: `1px solid ${C.linea}`,
-          boxShadow: "0 2px 8px rgba(20,20,20,.05)",
+          border: `1px solid ${C.taupe}`,
+          boxShadow: "0 2px 8px rgba(89,70,56,.05)",
           cursor: "grab",
           userSelect: "none",
           touchAction: "pan-y",
@@ -153,14 +153,14 @@ export function SwipeableTripCard({
             width: 48,
             height: 48,
             borderRadius: 14,
-            background: C.fondo,
+            background: C.taupe,
             flexShrink: 0,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <TypeIcon size={22} color={C.marron} />
+          <TypeIcon size={22} color={C.walnut} />
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           {editing ? (
@@ -178,18 +178,18 @@ export function SwipeableTripCard({
                 width: "100%",
                 fontSize: 17,
                 fontWeight: 700,
-                color: C.negro,
+                color: C.walnut,
                 fontFamily: "'Space Grotesk', sans-serif",
                 letterSpacing: "-0.02em",
                 border: "none",
-                borderBottom: `2px solid ${C.marron}`,
+                borderBottom: `2px solid ${C.mocha}`,
                 outline: "none",
                 background: "transparent",
                 padding: "0 0 2px",
               }}
             />
           ) : (
-            <div className="display" style={{ fontSize: 17, fontWeight: 700, color: C.negro, overflowWrap: "anywhere" }}>
+            <div className="display" style={{ fontSize: 17, fontWeight: 700, color: C.walnut, overflowWrap: "anywhere" }}>
               {trip.name}
             </div>
           )}
@@ -199,7 +199,7 @@ export function SwipeableTripCard({
               alignItems: "center",
               gap: 5,
               fontSize: 12.5,
-              color: C.grisSuave,
+              color: C.mocha,
               marginTop: 3,
             }}
           >
@@ -208,7 +208,7 @@ export function SwipeableTripCard({
           <div
             style={{
               height: 5,
-              background: C.fondo,
+              background: C.taupe,
               borderRadius: 99,
               marginTop: 10,
               overflow: "hidden",
@@ -219,7 +219,7 @@ export function SwipeableTripCard({
                 height: "100%",
                 width: `${pct}%`,
                 borderRadius: 99,
-                background: pct === 100 ? C.verde : C.marron,
+                background: pct === 100 ? C.walnut : C.mocha,
                 transition: "width .5s cubic-bezier(.22,1,.36,1)",
               }}
             />
@@ -227,7 +227,7 @@ export function SwipeableTripCard({
         </div>
         <span
           className="display"
-          style={{ fontSize: 15, fontWeight: 700, color: pct === 100 ? C.verde : C.marron }}
+          style={{ fontSize: 15, fontWeight: 700, color: pct === 100 ? C.walnut : C.mocha }}
         >
           {pct}%
         </span>

@@ -88,8 +88,8 @@ export default function App() {
   };
 
   return (
-    <div className="tralap flex h-full justify-center bg-backdrop">
-      <div className="relative flex h-full w-full max-w-app flex-col overflow-hidden bg-fondo shadow-[0_0_60px_rgba(0,0,0,.5)]">
+    <div className="tralap flex h-full justify-center bg-taupe">
+      <div className="relative flex h-full w-full max-w-app flex-col overflow-hidden bg-off-white shadow-[0_0_60px_rgba(89,70,56,.3)]">
         {/* La key reinicia el scroll al cambiar de pantalla */}
         <div
           key={openTrip?.id ?? "home"}

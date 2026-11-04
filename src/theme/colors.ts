@@ -1,18 +1,16 @@
 /**
- * Paleta oficial de Tralap (fuente de verdad: tralap-mockup-v6.jsx).
+ * Paleta oficial de Tralap.
  * Los mismos valores están registrados como tokens en tailwind.config.ts.
+ *
+ * Texto: Walnut es el principal. Mocha solo para texto secundario sobre Pure
+ * White; sobre Off White se queda corto de contraste y se usa Walnut. Sobre
+ * superficies Walnut, el texto secundario y el progreso van en Soft Taupe.
  */
 export const C = {
-  negro: "#141414", // superficies fuertes y texto principal
-  gris: "#55555A", // texto secundario
-  grisSuave: "#A3A3A8", // detalles apagados
-  fondo: "#F4F4F5", // fondo gris clarito neutro
-  linea: "#E5E5E8", // bordes
-  blanco: "#FFFFFF",
-  marron: "#A9805B", // acento — SOLO detalles (iconos, progreso, badges)
-  verde: "#5B7B54",
-  rojo: "#C24C34",
+  walnut: "#594638", // botones principales, iconos destacados, navegación activa
+  mocha: "#8A705B", // botones secundarios, progreso y detalles gráficos
+  taupe: "#D6CDC4", // chips, etiquetas, separadores y elementos desactivados
+  offWhite: "#F9F7F4", // fondo general de la aplicación
+  white: "#FFFFFF", // tarjetas, modales, formularios y superficies elevadas
+  rojo: "#C24C34", // fuera de la paleta: solo eliminar y errores
 } as const;
-
-/** Verde claro usado en el anillo/segmento del modo vuelta. */
-export const VERDE_CLARO = "#8FBC85";

@@ -27,14 +27,14 @@ function TemplateRow({ name, onRemove, delay }: TemplateRowProps) {
           alignItems: "center",
           gap: 14,
           padding: "13px 8px 13px 16px",
-          background: C.blanco,
-          border: `1px solid ${C.linea}`,
+          background: C.white,
+          border: `1px solid ${C.taupe}`,
           borderRadius: 14,
-          boxShadow: "0 1px 2px rgba(20,20,20,.04)",
+          boxShadow: "0 1px 2px rgba(89,70,56,.04)",
         }}
       >
-        <Bookmark size={16} color={C.marron} style={{ flexShrink: 0 }} />
-        <span style={{ flex: 1, minWidth: 0, overflowWrap: "anywhere", fontSize: 15, fontWeight: 500, color: C.negro }}>
+        <Bookmark size={16} color={C.mocha} style={{ flexShrink: 0 }} />
+        <span style={{ flex: 1, minWidth: 0, overflowWrap: "anywhere", fontSize: 15, fontWeight: 500, color: C.walnut }}>
           {name}
         </span>
         <button
@@ -46,19 +46,19 @@ function TemplateRow({ name, onRemove, delay }: TemplateRowProps) {
             border: "none",
             cursor: "pointer",
             background: "transparent",
-            color: C.grisSuave,
+            color: C.mocha,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             transition: "background .18s, color .18s",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = C.fondo;
+            e.currentTarget.style.background = C.offWhite;
             e.currentTarget.style.color = C.rojo;
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.background = "transparent";
-            e.currentTarget.style.color = C.grisSuave;
+            e.currentTarget.style.color = C.mocha;
           }}
         >
           <X size={16} />
@@ -83,15 +83,15 @@ export function TemplateView({ template, onAdd, onRemove }: TemplateViewProps) {
           alignItems: "flex-start",
           gap: 12,
           padding: "14px 16px",
-          background: C.blanco,
-          border: `1px solid ${C.linea}`,
+          background: C.white,
+          border: `1px solid ${C.taupe}`,
           borderRadius: 16,
           marginBottom: 16,
         }}
       >
-        <Bookmark size={18} color={C.marron} style={{ flexShrink: 0, marginTop: 2 }} />
-        <p style={{ margin: 0, fontSize: 13, color: C.gris, lineHeight: 1.5 }}>
-          Guarda aquí lo que <strong style={{ color: C.negro }}>siempre llevas</strong> a
+        <Bookmark size={18} color={C.mocha} style={{ flexShrink: 0, marginTop: 2 }} />
+        <p style={{ margin: 0, fontSize: 13, color: C.mocha, lineHeight: 1.5 }}>
+          Guarda aquí lo que <strong style={{ color: C.walnut }}>siempre llevas</strong> a
           cualquier viaje. Al crear un viaje nuevo podrás incluirlo todo de un toque, sin
           volver a escribirlo.
         </p>
@@ -102,7 +102,7 @@ export function TemplateView({ template, onAdd, onRemove }: TemplateViewProps) {
           style={{
             textAlign: "center",
             fontSize: 13.5,
-            color: C.grisSuave,
+            color: C.walnut,
             padding: "24px 0",
           }}
         >

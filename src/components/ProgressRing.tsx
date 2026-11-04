@@ -2,10 +2,10 @@ import { C } from "../theme/colors";
 
 interface ProgressRingProps {
   pct: number;
-  accent?: string;
 }
 
-export function ProgressRing({ pct, accent }: ProgressRingProps) {
+/* Va sobre la cabecera Walnut, donde Mocha no se distingue: usa Soft Taupe. */
+export function ProgressRing({ pct }: ProgressRingProps) {
   const R = 26;
   const CIRC = 2 * Math.PI * R;
   return (
@@ -24,7 +24,7 @@ export function ProgressRing({ pct, accent }: ProgressRingProps) {
           cy="32"
           r={R}
           fill="none"
-          stroke={pct === 100 ? "#8FBC85" : (accent ?? C.marron)}
+          stroke={pct === 100 ? C.white : C.taupe}
           strokeWidth="6"
           strokeLinecap="round"
           strokeDasharray={CIRC}
@@ -45,7 +45,7 @@ export function ProgressRing({ pct, accent }: ProgressRingProps) {
           justifyContent: "center",
           fontSize: 14,
           fontWeight: 700,
-          color: C.blanco,
+          color: C.white,
         }}
       >
         {pct}%
