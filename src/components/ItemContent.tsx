@@ -36,6 +36,8 @@ export function ItemContent({ item }: ItemContentProps) {
       <span
         style={{
           flex: 1,
+          minWidth: 0,
+          overflowWrap: "anywhere",
           fontSize: 15,
           fontWeight: 500,
           color: item.done ? C.grisSuave : C.negro,

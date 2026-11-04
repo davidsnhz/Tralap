@@ -18,6 +18,7 @@ import type {
   TripType,
   TripTypeId,
 } from "../types";
+import { normalizeName } from "../utils/text";
 
 export const TRIP_TYPES: TripType[] = [
   { id: "playa", label: "Playa", icon: Sun },
@@ -39,6 +40,7 @@ export const ACTIVITIES: Activity[] = [
     label: "Senderismo",
     icon: Footprints,
     items: ["Botas de trekking", "Mochila de día", "Cantimplora"],
+    replaces: ["Botas de senderismo", "Mochila pequeña"],
   },
   {
     id: "gimnasio",
@@ -51,6 +53,7 @@ export const ACTIVITIES: Activity[] = [
     label: "Fiesta / cena",
     icon: PartyPopper,
     items: ["Outfit de noche", "Zapatos de vestir"],
+    replaces: ["Zapatos formales"],
   },
   {
     id: "foto",
@@ -63,12 +66,14 @@ export const ACTIVITIES: Activity[] = [
     label: "Trabajo",
     icon: Laptop,
     items: ["Portátil y cargador", "Adaptador de enchufe"],
+    replaces: ["Portátil"],
   },
   {
     id: "agua",
     label: "Agua / piscina",
     icon: Waves,
     items: ["Bañador", "Gafas de bucear", "Toalla de microfibra"],
+    replaces: ["Toalla de playa"],
   },
 ];
 
@@ -117,8 +122,8 @@ const makeItem = (name: string, extra: Partial<Item> = {}): Item => ({
 /**
  * Genera las listas del viaje: outfits con cantidades de calcBasics,
  * y esenciales = base + sugerencias del tipo + ítems de actividades + plantilla,
- * sin duplicados (los ítems de actividad tienen prioridad sobre las sugerencias,
- * igual que en el mockup).
+ * sin duplicados: las actividades tienen prioridad sobre las sugerencias que ya
+ * cubren, sea con el mismo nombre o porque las indican en `replaces`.
  */
 export const buildItems = (
   type: TripTypeId,
@@ -126,18 +131,19 @@ export const buildItems = (
   templateItems: string[] = [],
   actIds: ActivityId[] = [],
 ): Pick<Trip, "outfits" | "essentials" | "returnList"> => {
-  const actItems = actIds.flatMap((id) => {
-    const act = ACTIVITIES.find((a) => a.id === id);
-    return act ? act.items.map((name) => makeItem(name, { fromActivity: id })) : [];
-  });
-  const suggested = SUGGESTIONS[type].filter(
-    (s) => !actItems.some((a) => a.name.toLowerCase() === s.toLowerCase()),
+  const selected = ACTIVITIES.filter((a) => actIds.includes(a.id));
+  const actItems = selected.flatMap((act) =>
+    act.items.map((name) => makeItem(name, { fromActivity: act.id })),
   );
+  const covered = new Set(
+    selected.flatMap((act) => [...act.items, ...(act.replaces ?? [])]).map(normalizeName),
+  );
+  const suggested = SUGGESTIONS[type].filter((s) => !covered.has(normalizeName(s)));
 
   const essentials: Item[] = [];
   const seen = new Set<string>();
   const push = (item: Item): void => {
-    const key = item.name.toLowerCase();
+    const key = normalizeName(item.name);
     if (seen.has(key)) return;
     seen.add(key);
     essentials.push(item);

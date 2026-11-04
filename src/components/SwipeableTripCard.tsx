@@ -4,6 +4,7 @@ import { TRIP_TYPES } from "../data/intelligence";
 import { useSwipeX } from "../hooks/useSwipeX";
 import { C } from "../theme/colors";
 import type { Trip } from "../types";
+import { countLabel } from "../utils/text";
 
 const ACTIONS_W = 148;
 
@@ -32,7 +33,7 @@ export function SwipeableTripCard({
     : 0;
   const TypeIcon = TRIP_TYPES.find((t) => t.id === trip.type)?.icon ?? Sun;
 
-  const { dx, setDx, active, handlers } = useSwipeX({
+  const { dx, close, active, handlers } = useSwipeX({
     actionWidth: ACTIONS_W,
     overshoot: 20,
     snapDivisor: 2.2,
@@ -45,11 +46,22 @@ export function SwipeableTripCard({
     setTimeout(onDelete, 320);
   };
 
+  const startRename = (): void => {
+    setDraft(trip.name);
+    setEditing(true);
+    close();
+  };
+
+  const cancelRename = (): void => {
+    setEditing(false);
+    close();
+  };
+
   const saveRename = (): void => {
     const v = draft.trim();
     if (v) onRename(v);
     setEditing(false);
-    setDx(0);
+    close();
   };
 
   return (
@@ -69,10 +81,7 @@ export function SwipeableTripCard({
         }}
       >
         <button
-          onClick={() => {
-            setEditing(true);
-            setDx(-ACTIONS_W);
-          }}
+          onClick={startRename}
           style={{
             width: 66,
             border: "none",
@@ -161,7 +170,7 @@ export function SwipeableTripCard({
               onChange={(e) => setDraft(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") saveRename();
-                if (e.key === "Escape") setEditing(false);
+                if (e.key === "Escape") cancelRename();
               }}
               onBlur={saveRename}
               onPointerDown={(e) => e.stopPropagation()}
@@ -180,7 +189,7 @@ export function SwipeableTripCard({
               }}
             />
           ) : (
-            <div className="display" style={{ fontSize: 17, fontWeight: 700, color: C.negro }}>
+            <div className="display" style={{ fontSize: 17, fontWeight: 700, color: C.negro, overflowWrap: "anywhere" }}>
               {trip.name}
             </div>
           )}
@@ -194,7 +203,7 @@ export function SwipeableTripCard({
               marginTop: 3,
             }}
           >
-            <Calendar size={12} /> {trip.days} días
+            <Calendar size={12} /> {countLabel(trip.days, "día", "días")}
           </div>
           <div
             style={{

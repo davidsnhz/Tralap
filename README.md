@@ -69,9 +69,10 @@ npm run icons
 src/
   components/   Componentes de UI (Home, TripView, NewTripSheet, …)
   data/         Datos de inteligencia (tipos de viaje, sugerencias, actividades…)
-  hooks/        useLocalStorage (persistencia versionada) y useSwipeX (gestos)
+  hooks/        useLocalStorage (persistencia versionada), useRoute (pantalla en la URL) y useSwipeX (gestos)
   theme/        Paleta de colores (misma fuente que tailwind.config.ts)
   types/        Tipos TypeScript del dominio
+  utils/        Utilidades de texto (plurales, comparación de nombres)
 ```
 
 ## Instalar como app en el móvil

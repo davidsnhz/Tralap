@@ -21,6 +21,8 @@ export interface Activity {
   label: string;
   icon: LucideIcon;
   items: string[];
+  /** Sugerencias del tipo de viaje que esta actividad ya cubre con sus ítems. */
+  replaces?: string[];
 }
 
 /** Elemento de checklist (outfits, esenciales o lista de vuelta). */

@@ -34,7 +34,7 @@ function TemplateRow({ name, onRemove, delay }: TemplateRowProps) {
         }}
       >
         <Bookmark size={16} color={C.marron} style={{ flexShrink: 0 }} />
-        <span style={{ flex: 1, fontSize: 15, fontWeight: 500, color: C.negro }}>
+        <span style={{ flex: 1, minWidth: 0, overflowWrap: "anywhere", fontSize: 15, fontWeight: 500, color: C.negro }}>
           {name}
         </span>
         <button
@@ -70,7 +70,7 @@ function TemplateRow({ name, onRemove, delay }: TemplateRowProps) {
 
 interface TemplateViewProps {
   template: string[];
-  onAdd: (name: string) => void;
+  onAdd: (name: string) => boolean;
   onRemove: (name: string) => void;
 }
 

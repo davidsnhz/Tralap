@@ -3,6 +3,7 @@ import { Bookmark, Check, X } from "lucide-react";
 import { ACTIVITIES, TRIP_TYPES } from "../data/intelligence";
 import { C } from "../theme/colors";
 import type { ActivityId, NewTripData, TripTypeId } from "../types";
+import { countLabel } from "../utils/text";
 import { Toggle } from "./Toggle";
 
 interface NewTripSheetProps {
@@ -168,7 +169,7 @@ export function NewTripSheet({ onClose, onCreate, templateCount }: NewTripSheetP
         <label style={{ fontSize: 12, fontWeight: 700, color: C.gris, letterSpacing: 1 }}>
           DURACIÓN —{" "}
           <span className="display" style={{ color: C.marron, fontSize: 13 }}>
-            {days} días
+            {countLabel(days, "día", "días")}
           </span>
         </label>
         <input
@@ -206,7 +207,7 @@ export function NewTripSheet({ onClose, onCreate, templateCount }: NewTripSheetP
             <div style={{ fontSize: 12, color: C.gris, marginTop: 1 }}>
               {templateCount === 0
                 ? "Aún no has guardado imprescindibles"
-                : `${templateCount} imprescindible${templateCount === 1 ? "" : "s"} → Esenciales`}
+                : `${countLabel(templateCount, "imprescindible", "imprescindibles")} → Esenciales`}
             </div>
           </div>
           <Toggle

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Bookmark, Luggage, Plus } from "lucide-react";
 import { C } from "../theme/colors";
 import type { HomeTab, Trip } from "../types";
+import { countLabel } from "../utils/text";
 import { SwipeableTripCard } from "./SwipeableTripCard";
 import { TemplateView } from "./TemplateView";
 
@@ -12,7 +13,7 @@ interface HomeProps {
   onNew: () => void;
   onRename: (id: string, name: string) => void;
   onDelete: (id: string) => void;
-  onTplAdd: (name: string) => void;
+  onTplAdd: (name: string) => boolean;
   onTplRemove: (name: string) => void;
 }
 
@@ -109,7 +110,7 @@ export function Home({
               MIS VIAJES
             </span>
             <span style={{ fontSize: 12.5, color: C.grisSuave, fontWeight: 500 }}>
-              {trips.length} activos
+              {countLabel(trips.length, "activo", "activos")}
             </span>
           </div>
 

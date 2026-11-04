@@ -12,6 +12,7 @@ import {
 import { TRIP_TYPES } from "../data/intelligence";
 import { C, VERDE_CLARO } from "../theme/colors";
 import type { PackTab, Trip, TripMode } from "../types";
+import { countLabel } from "../utils/text";
 import { AddItemRow } from "./AddItemRow";
 import { CheckItem } from "./CheckItem";
 import { ProgressRing } from "./ProgressRing";
@@ -21,7 +22,7 @@ interface TripViewProps {
   trip: Trip;
   onBack: () => void;
   onToggle: (tab: PackTab, itemId: string) => void;
-  onAddItem: (tab: PackTab, name: string) => void;
+  onAddItem: (tab: PackTab, name: string) => boolean;
   onDeleteItem: (tab: PackTab, itemId: string) => void;
   onToggleReturn: (itemId: string) => void;
 }
@@ -47,6 +48,7 @@ export function TripView({
       )
     : 0;
   const pct = mode === "ida" ? pctIda : pctVuelta;
+  const daysLabel = countLabel(trip.days, "día", "días");
 
   const items = tab === "outfits" ? trip.outfits : trip.essentials;
   const tripType = TRIP_TYPES.find((t) => t.id === trip.type);
@@ -81,25 +83,29 @@ export function TripView({
         >
           <ChevronLeft size={20} color={C.blanco} />
         </button>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: 12 }}>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
               <TypeIcon size={15} color={C.marron} />
               <span style={{ fontSize: 13, fontWeight: 600, color: C.marron, letterSpacing: 0.3 }}>
-                {tripType?.label} · {trip.days} días
+                {tripType?.label} · {daysLabel}
               </span>
             </div>
-            <h1 className="display" style={{ margin: 0, fontSize: 28, fontWeight: 700, color: C.blanco }}>
+            <h1 className="display" style={{ margin: 0, fontSize: 28, fontWeight: 700, color: C.blanco, overflowWrap: "anywhere" }}>
               {trip.name}
             </h1>
             <p style={{ margin: "8px 0 0", fontSize: 13.5, color: "rgba(255,255,255,.55)" }}>
               {mode === "ida"
                 ? pct === 100
                   ? "¡Maleta lista!"
-                  : `${all.filter((i) => !i.done).length} cosas por guardar`
+                  : countLabel(all.filter((i) => !i.done).length, "cosa por guardar", "cosas por guardar")
                 : pct === 100
                   ? "Todo revisado. ¡Buen regreso!"
-                  : `${trip.returnList.filter((i) => !i.done).length} comprobaciones pendientes`}
+                  : countLabel(
+                      trip.returnList.filter((i) => !i.done).length,
+                      "comprobación pendiente",
+                      "comprobaciones pendientes",
+                    )}
             </p>
           </div>
           <ProgressRing pct={pct} accent={mode === "vuelta" ? VERDE_CLARO : undefined} />
@@ -205,7 +211,7 @@ export function TripView({
             >
               <Sparkles size={13} />
               {tab === "outfits"
-                ? `Cantidades calculadas para ${trip.days} días`
+                ? `Cantidades calculadas para ${daysLabel}`
                 : `Incluye sugerencias para ${tripType?.label.toLowerCase()}`}
             </p>
             {items.map((item, i) => (

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { PointerEvent } from "react";
 
 interface UseSwipeXOptions {
@@ -15,7 +15,8 @@ interface UseSwipeXOptions {
 
 interface UseSwipeXResult {
   dx: number;
-  setDx: (dx: number) => void;
+  /** Cierra las acciones de esta fila. */
+  close: () => void;
   /** true mientras el puntero arrastra: desactiva la transición CSS. */
   active: boolean;
   handlers: {
@@ -26,10 +27,19 @@ interface UseSwipeXResult {
   };
 }
 
+/** Movimiento (px) a partir del cual el gesto deja de ser un toque. */
+const TAP_SLOP = 8;
+
+/** Cierra la fila con las acciones abiertas: solo puede haber una a la vez. */
+let closeOpenRow: (() => void) | null = null;
+
 /**
- * Gesto de deslizar horizontal (Pointer Events: táctil y ratón), idéntico al
- * del mockup: arrastrar a la izquierda revela acciones; un toque sin arrastre
- * cierra las acciones si están abiertas o dispara onTap si están cerradas.
+ * Gesto de deslizar horizontal (Pointer Events: táctil y ratón): arrastrar a la
+ * izquierda revela acciones; un toque sin arrastre cierra las acciones si están
+ * abiertas o dispara onTap si están cerradas.
+ *
+ * Con `touch-action: pan-y`, al desplazar la lista con el dedo el navegador
+ * cancela el gesto (pointercancel): eso nunca cuenta como toque.
  */
 export function useSwipeX({
   actionWidth,
@@ -39,38 +49,87 @@ export function useSwipeX({
   disabled = false,
 }: UseSwipeXOptions): UseSwipeXResult {
   const [dx, setDx] = useState(0);
-  const drag = useRef({ startX: 0, baseDx: 0, moved: false, active: false });
+  const drag = useRef({
+    startX: 0,
+    startY: 0,
+    baseDx: 0,
+    moved: false,
+    horizontal: false,
+    active: false,
+    /** El gesto ha servido para cerrar otra fila: no cuenta como toque. */
+    suppressTap: false,
+  });
+
+  const close = useCallback((): void => {
+    setDx(0);
+    if (closeOpenRow === close) closeOpenRow = null;
+  }, []);
+
+  useEffect(
+    () => () => {
+      if (closeOpenRow === close) closeOpenRow = null;
+    },
+    [close],
+  );
 
   const onPointerDown = (e: PointerEvent<HTMLElement>): void => {
     if (disabled) return;
-    drag.current = { startX: e.clientX, baseDx: dx, moved: false, active: true };
+    const closeOther = closeOpenRow !== close ? closeOpenRow : null;
+    closeOther?.();
+    drag.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      baseDx: dx,
+      moved: false,
+      horizontal: false,
+      active: true,
+      suppressTap: closeOther !== null,
+    };
     e.currentTarget.setPointerCapture(e.pointerId);
   };
 
   const onPointerMove = (e: PointerEvent<HTMLElement>): void => {
-    if (!drag.current.active) return;
-    const delta = e.clientX - drag.current.startX;
-    if (Math.abs(delta) > 6) drag.current.moved = true;
-    setDx(
-      Math.min(0, Math.max(-actionWidth - overshoot, drag.current.baseDx + delta)),
-    );
+    const d = drag.current;
+    if (!d.active) return;
+    const deltaX = e.clientX - d.startX;
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(e.clientY - d.startY);
+    if (absX > TAP_SLOP || absY > TAP_SLOP) d.moved = true;
+    if (!d.horizontal) {
+      if (absX <= TAP_SLOP || absX <= absY) return;
+      d.horizontal = true;
+    }
+    setDx(Math.min(0, Math.max(-actionWidth - overshoot, d.baseDx + deltaX)));
   };
 
   const onPointerUp = (): void => {
-    if (!drag.current.active) return;
-    drag.current.active = false;
-    if (!drag.current.moved) {
-      if (dx < -10) setDx(0);
-      else onTap();
+    const d = drag.current;
+    if (!d.active) return;
+    d.active = false;
+    if (!d.moved) {
+      if (dx < -10) close();
+      else if (!d.suppressTap) onTap();
       return;
     }
-    setDx(dx < -actionWidth / snapDivisor ? -actionWidth : 0);
+    if (dx < -actionWidth / snapDivisor) {
+      setDx(-actionWidth);
+      closeOpenRow = close;
+    } else {
+      close();
+    }
+  };
+
+  const onPointerCancel = (): void => {
+    const d = drag.current;
+    if (!d.active) return;
+    d.active = false;
+    setDx(d.baseDx);
   };
 
   return {
     dx,
-    setDx,
+    close,
     active: drag.current.active,
-    handlers: { onPointerDown, onPointerMove, onPointerUp, onPointerCancel: onPointerUp },
+    handlers: { onPointerDown, onPointerMove, onPointerUp, onPointerCancel },
   };
 }
