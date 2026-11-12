@@ -1,6 +1,7 @@
 /**
- * Paleta oficial de Tralap.
- * Los mismos valores están registrados como tokens en tailwind.config.ts.
+ * Paleta oficial de Tralap: única fuente de los colores. La usan los
+ * componentes, tailwind.config.ts (clases y theme() en index.css) y
+ * vite.config.ts (manifiesto y theme-color).
  *
  * Texto: Walnut es el principal. Mocha solo para texto secundario sobre Pure
  * White; sobre Off White se queda corto de contraste y se usa Walnut. Sobre

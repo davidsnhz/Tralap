@@ -1,22 +1,29 @@
 import { useState } from "react";
 import {
+  Check,
   ChevronLeft,
+  Ellipsis,
   FileText,
   Luggage,
+  Pencil,
   Search,
   Shirt,
   Sparkles,
   Sun,
+  Trash2,
   Undo2,
 } from "lucide-react";
 import { TRIP_TYPES } from "../data/intelligence";
 import { C } from "../theme/colors";
+import { EASE, FONT, SHADOW, veil } from "../theme/tokens";
 import type { PackTab, Trip, TripMode } from "../types";
 import { countLabel } from "../utils/text";
 import { AddItemRow } from "./AddItemRow";
 import { CheckItem } from "./CheckItem";
 import { ProgressRing } from "./ProgressRing";
 import { SwipeableCheckItem } from "./SwipeableCheckItem";
+import { Hint, InfoNote, Strong } from "./ui/Notes";
+import { SegmentedTabs, type TabOption } from "./ui/SegmentedTabs";
 
 interface TripViewProps {
   trip: Trip;
@@ -25,7 +32,46 @@ interface TripViewProps {
   onAddItem: (tab: PackTab, name: string) => boolean;
   onDeleteItem: (tab: PackTab, itemId: string) => void;
   onToggleReturn: (itemId: string) => void;
+  onRename: (name: string) => void;
+  onDelete: () => void;
 }
+
+const MODES: TabOption<TripMode>[] = [
+  { id: "ida", label: "Preparar maleta", icon: Luggage },
+  { id: "vuelta", label: "Modo vuelta", icon: Undo2 },
+];
+const PACK_TABS: TabOption<PackTab>[] = [
+  { id: "outfits", label: "Outfits", icon: Shirt },
+  { id: "essentials", label: "Esenciales", icon: FileText },
+];
+
+const headerButton = {
+  background: veil(0.09),
+  border: "none",
+  borderRadius: 12,
+  width: 38,
+  height: 38,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+} as const;
+
+const menuItem = {
+  width: "100%",
+  display: "flex",
+  alignItems: "center",
+  gap: 10,
+  padding: "12px 14px",
+  border: "none",
+  borderRadius: 10,
+  background: "transparent",
+  fontSize: 14.5,
+  fontWeight: 600,
+  fontFamily: FONT.body,
+  cursor: "pointer",
+  textAlign: "left",
+} as const;
 
 export function TripView({
   trip,
@@ -34,9 +80,15 @@ export function TripView({
   onAddItem,
   onDeleteItem,
   onToggleReturn,
+  onRename,
+  onDelete,
 }: TripViewProps) {
   const [tab, setTab] = useState<PackTab>("outfits");
   const [mode, setMode] = useState<TripMode>("ida");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [renaming, setRenaming] = useState(false);
+  const [draft, setDraft] = useState(trip.name);
+  const [editing, setEditing] = useState(false);
 
   const all = [...trip.outfits, ...trip.essentials];
   const pctIda = all.length
@@ -54,46 +106,126 @@ export function TripView({
   const tripType = TRIP_TYPES.find((t) => t.id === trip.type);
   const TypeIcon = tripType?.icon ?? Sun;
 
-  const modes: { id: TripMode; label: string; icon: typeof Luggage }[] = [
-    { id: "ida", label: "Preparar maleta", icon: Luggage },
-    { id: "vuelta", label: "Modo vuelta", icon: Undo2 },
-  ];
-  const tabs: { id: PackTab; label: string; icon: typeof Shirt }[] = [
-    { id: "outfits", label: "Outfits", icon: Shirt },
-    { id: "essentials", label: "Esenciales", icon: FileText },
-  ];
+  const startRename = (): void => {
+    setMenuOpen(false);
+    setDraft(trip.name);
+    setRenaming(true);
+  };
+  const saveRename = (): void => {
+    const v = draft.trim();
+    if (v && v !== trip.name) onRename(v);
+    setRenaming(false);
+  };
 
   return (
     <div className="anim-fade">
-      <div style={{ background: C.walnut, borderRadius: "0 0 28px 28px", padding: "20px 22px 22px" }}>
-        <button
-          onClick={onBack}
+      <div
+        style={{
+          background: C.walnut,
+          borderRadius: "0 0 28px 28px",
+          padding: "calc(20px + env(safe-area-inset-top)) 22px 22px",
+        }}
+      >
+        <div
           style={{
-            background: "rgba(255,255,255,.09)",
-            border: "none",
-            borderRadius: 12,
-            width: 38,
-            height: 38,
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
             marginBottom: 18,
+            position: "relative",
           }}
         >
-          <ChevronLeft size={20} color={C.white} />
-        </button>
+          <button onClick={onBack} aria-label="Volver a Inicio" style={headerButton}>
+            <ChevronLeft size={20} color={C.white} />
+          </button>
+          <button
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-label="Opciones del viaje"
+            aria-haspopup="menu"
+            aria-expanded={menuOpen}
+            style={headerButton}
+          >
+            <Ellipsis size={20} color={C.white} />
+          </button>
+          {menuOpen && (
+            <>
+              {/* Velo invisible: tocar fuera cierra el menú */}
+              <div
+                onClick={() => setMenuOpen(false)}
+                style={{ position: "fixed", inset: 0, zIndex: 5 }}
+              />
+              <div
+                role="menu"
+                className="anim-fade"
+                onKeyDown={(e) => e.key === "Escape" && setMenuOpen(false)}
+                style={{
+                  position: "absolute",
+                  top: 44,
+                  right: 0,
+                  zIndex: 6,
+                  minWidth: 200,
+                  padding: 6,
+                  borderRadius: 14,
+                  background: C.white,
+                  boxShadow: SHADOW.cta,
+                }}
+              >
+                <button role="menuitem" autoFocus onClick={startRename} style={{ ...menuItem, color: C.walnut }}>
+                  <Pencil size={17} color={C.mocha} /> Renombrar
+                </button>
+                <button
+                  role="menuitem"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    onDelete();
+                  }}
+                  style={{ ...menuItem, color: C.rojo }}
+                >
+                  <Trash2 size={17} /> Eliminar viaje
+                </button>
+              </div>
+            </>
+          )}
+        </div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: 12 }}>
-          <div>
+          <div style={{ flex: renaming ? 1 : undefined, minWidth: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
               <TypeIcon size={15} color={C.taupe} />
               <span style={{ fontSize: 13, fontWeight: 600, color: C.taupe, letterSpacing: 0.3 }}>
                 {tripType?.label} · {daysLabel}
               </span>
             </div>
-            <h1 className="display" style={{ margin: 0, fontSize: 28, fontWeight: 700, color: C.white, overflowWrap: "anywhere" }}>
-              {trip.name}
-            </h1>
+            {renaming ? (
+              <input
+                autoFocus
+                aria-label="Nombre del viaje"
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") saveRename();
+                  if (e.key === "Escape") setRenaming(false);
+                }}
+                onBlur={saveRename}
+                enterKeyHint="done"
+                className="display"
+                style={{
+                  width: "100%",
+                  margin: 0,
+                  padding: "0 0 2px",
+                  fontSize: 28,
+                  fontWeight: 700,
+                  color: C.white,
+                  background: "transparent",
+                  border: "none",
+                  borderBottom: `2px solid ${C.taupe}`,
+                  outline: "none",
+                }}
+              />
+            ) : (
+              <h1 className="display" style={{ margin: 0, fontSize: 28, fontWeight: 700, color: C.white, overflowWrap: "anywhere" }}>
+                {trip.name}
+              </h1>
+            )}
             <p style={{ margin: "8px 0 0", fontSize: 13.5, color: C.taupe }}>
               {mode === "ida"
                 ? pct === 100
@@ -115,7 +247,7 @@ export function TripView({
           style={{
             display: "flex",
             marginTop: 18,
-            background: "rgba(255,255,255,.08)",
+            background: veil(0.08),
             borderRadius: 12,
             padding: 4,
             position: "relative",
@@ -130,13 +262,14 @@ export function TripView({
               left: mode === "ida" ? 4 : "calc(50%)",
               background: C.mocha,
               borderRadius: 9,
-              transition: "left .28s cubic-bezier(.22,1,.36,1)",
+              transition: `left .28s ${EASE.out}`,
             }}
           />
-          {modes.map((m) => (
+          {MODES.map((m) => (
             <button
               key={m.id}
               onClick={() => setMode(m.id)}
+              aria-pressed={mode === m.id}
               style={{
                 flex: 1,
                 position: "relative",
@@ -151,7 +284,7 @@ export function TripView({
                 gap: 7,
                 fontSize: 13,
                 fontWeight: 700,
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: FONT.display,
                 color: mode === m.id ? C.white : C.taupe,
                 transition: "color .25s",
               }}
@@ -164,91 +297,84 @@ export function TripView({
 
       {mode === "ida" ? (
         <div key="ida" className="anim-fade">
-          <div style={{ display: "flex", gap: 8, padding: "18px 22px 10px" }}>
-            {tabs.map((t) => {
-              const active = tab === t.id;
-              return (
-                <button
-                  key={t.id}
-                  onClick={() => setTab(t.id)}
-                  style={{
-                    flex: 1,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 8,
-                    padding: "12px 0",
-                    borderRadius: 12,
-                    cursor: "pointer",
-                    fontSize: 14.5,
-                    fontWeight: 700,
-                    fontFamily: "'Space Grotesk', sans-serif",
-                    border: `1px solid ${active ? C.walnut : C.taupe}`,
-                    background: active ? C.walnut : C.white,
-                    color: active ? C.white : C.mocha,
-                    boxShadow: active ? "0 4px 12px rgba(89,70,56,.22)" : "none",
-                    transform: active ? "translateY(-1px)" : "none",
-                    transition: "all .25s cubic-bezier(.22,1,.36,1)",
-                  }}
-                >
-                  <t.icon size={16} /> {t.label}
-                </button>
-              );
-            })}
-          </div>
+          <SegmentedTabs tabs={PACK_TABS} value={tab} onChange={setTab} style={{ padding: "18px 22px 10px" }} />
 
           <div style={{ padding: "6px 22px 30px" }} key={tab}>
-            <p
+            <div
               style={{
-                fontSize: 12.5,
-                color: C.walnut,
-                fontWeight: 600,
-                margin: "6px 4px 12px",
                 display: "flex",
-                gap: 6,
                 alignItems: "center",
+                justifyContent: "space-between",
+                gap: 8,
+                margin: "0 0 6px 4px",
               }}
             >
-              <Sparkles size={13} />
-              {tab === "outfits"
-                ? `Cantidades calculadas para ${daysLabel}`
-                : `Incluye sugerencias para ${tripType?.label.toLowerCase()}`}
-            </p>
+              <p
+                style={{
+                  fontSize: 12.5,
+                  color: C.walnut,
+                  fontWeight: 600,
+                  margin: 0,
+                  display: "flex",
+                  gap: 6,
+                  alignItems: "center",
+                }}
+              >
+                <Sparkles size={13} style={{ flexShrink: 0 }} />
+                {tab === "outfits"
+                  ? `Cantidades calculadas para ${daysLabel}`
+                  : `Incluye sugerencias para ${tripType?.label.toLowerCase()}`}
+              </p>
+              {items.length > 0 && (
+                <button
+                  onClick={() => setEditing((v) => !v)}
+                  aria-pressed={editing}
+                  style={{
+                    flexShrink: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 5,
+                    minHeight: 36,
+                    padding: "0 10px",
+                    borderRadius: 10,
+                    border: "none",
+                    background: editing ? C.walnut : "transparent",
+                    color: editing ? C.white : C.walnut,
+                    fontSize: 13,
+                    fontWeight: 700,
+                    fontFamily: FONT.display,
+                    cursor: "pointer",
+                    transition: "background .2s, color .2s",
+                  }}
+                >
+                  {editing ? <Check size={14} /> : <Pencil size={14} />}
+                  {editing ? "Listo" : "Editar"}
+                </button>
+              )}
+            </div>
             {items.map((item, i) => (
               <SwipeableCheckItem
                 key={item.id}
                 item={item}
                 delay={i * 35}
+                editing={editing}
                 onToggle={() => onToggle(tab, item.id)}
                 onDelete={() => onDeleteItem(tab, item.id)}
               />
             ))}
             <AddItemRow onAdd={(name) => onAddItem(tab, name)} />
-            <p style={{ fontSize: 11.5, color: C.walnut, textAlign: "center", margin: "12px 0 0" }}>
-              Toca para marcar · desliza a la izquierda para eliminar
-            </p>
+            <Hint style={{ margin: "12px 0 0" }}>
+              {editing
+                ? "Toca la papelera para eliminar. Podrás deshacerlo."
+                : "Toca para marcar · desliza a la izquierda o pulsa Editar para eliminar"}
+            </Hint>
           </div>
         </div>
       ) : (
         <div key="vuelta" className="anim-fade" style={{ padding: "18px 22px 30px" }}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-start",
-              gap: 12,
-              padding: "14px 16px",
-              background: C.white,
-              border: `1px solid ${C.taupe}`,
-              borderRadius: 16,
-              marginBottom: 14,
-            }}
-          >
-            <Search size={18} color={C.mocha} style={{ flexShrink: 0, marginTop: 2 }} />
-            <p style={{ margin: 0, fontSize: 13, color: C.mocha, lineHeight: 1.5 }}>
-              Repasa esto <strong style={{ color: C.walnut }}>antes de salir del alojamiento</strong>{" "}
-              para no dejarte nada atrás.
-            </p>
-          </div>
+          <InfoNote icon={Search} style={{ marginBottom: 14 }}>
+            Repasa esto <Strong>antes de salir del alojamiento</Strong> para no dejarte nada atrás.
+          </InfoNote>
           {trip.returnList.map((item, i) => (
             <CheckItem
               key={item.id}

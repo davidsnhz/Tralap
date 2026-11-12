@@ -2,8 +2,11 @@ import { useState } from "react";
 import { Trash2 } from "lucide-react";
 import { useSwipeX } from "../hooks/useSwipeX";
 import { C } from "../theme/colors";
+import { EASE } from "../theme/tokens";
 import type { Item } from "../types";
 import { ItemContent } from "./ItemContent";
+import { SwipeAction } from "./ui/SwipeAction";
+import { rowSurface } from "./ui/surfaces";
 
 const ITEM_ACTION_W = 74;
 
@@ -12,6 +15,8 @@ interface SwipeableCheckItemProps {
   onToggle: () => void;
   onDelete: () => void;
   delay?: number;
+  /** Modo edición: papelera a la vista, sin gestos ni marcado. */
+  editing?: boolean;
 }
 
 /* Fila de checklist deslizable: toque = marcar, deslizar izq. = eliminar */
@@ -20,14 +25,17 @@ export function SwipeableCheckItem({
   onToggle,
   onDelete,
   delay = 0,
+  editing = false,
 }: SwipeableCheckItemProps) {
   const [removing, setRemoving] = useState(false);
-  const { dx, active, handlers } = useSwipeX({
+  const { dx: swipeDx, active, handlers } = useSwipeX({
     actionWidth: ITEM_ACTION_W,
     overshoot: 16,
     snapDivisor: 2,
     onTap: onToggle,
+    disabled: editing,
   });
+  const dx = editing ? 0 : swipeDx;
 
   const handleDelete = (): void => {
     setRemoving(true);
@@ -50,53 +58,58 @@ export function SwipeableCheckItem({
           overflow: "hidden",
         }}
       >
-        <button
-          onClick={handleDelete}
-          style={{
-            width: ITEM_ACTION_W - 8,
-            border: "none",
-            cursor: "pointer",
-            borderRadius: 12,
-            background: C.rojo,
-            color: C.white,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 3,
-            fontSize: 10.5,
-            fontWeight: 700,
-            fontFamily: "'Inter', sans-serif",
-            opacity: dx < -25 ? 1 : 0,
-            transform: `scale(${dx < -25 ? 1 : 0.85})`,
-            transition: "opacity .2s, transform .2s",
-          }}
-        >
-          <Trash2 size={16} /> Eliminar
-        </button>
+        <SwipeAction icon={Trash2} label="Eliminar" onClick={handleDelete} visible={dx < -25} tone="danger" size="row" />
       </div>
 
       {/* Fila */}
       <div
         {...handlers}
+        role={editing ? undefined : "checkbox"}
+        aria-checked={editing ? undefined : item.done}
+        tabIndex={editing ? undefined : 0}
+        onKeyDown={(e) => {
+          if (editing || (e.key !== "Enter" && e.key !== " ")) return;
+          e.preventDefault();
+          onToggle();
+        }}
         className="item-row"
         style={{
           transform: `translateX(${dx}px)`,
-          transition: active ? "none" : "transform .3s cubic-bezier(.22,1,.36,1)",
+          transition: active ? "none" : `transform .3s ${EASE.out}`,
           display: "flex",
           alignItems: "center",
           gap: 14,
-          padding: "14px 16px",
-          background: item.done ? C.offWhite : C.white,
-          border: `1px solid ${item.done ? "transparent" : C.taupe}`,
-          borderRadius: 14,
-          boxShadow: item.done ? "none" : "0 1px 2px rgba(89,70,56,.04)",
-          cursor: "pointer",
+          // En edición la papelera (40 px) sustituye al relleno: la fila mide lo mismo.
+          padding: editing ? "6px 6px 6px 16px" : "14px 16px",
+          ...rowSurface(item.done),
+          cursor: editing ? "default" : "pointer",
           userSelect: "none",
           touchAction: "pan-y",
         }}
       >
         <ItemContent item={item} />
+        {editing && (
+          <button
+            onClick={handleDelete}
+            aria-label={`Eliminar ${item.name}`}
+            className="anim-pop"
+            style={{
+              flexShrink: 0,
+              width: 40,
+              height: 40,
+              borderRadius: 10,
+              border: "none",
+              background: "transparent",
+              color: C.rojo,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+            }}
+          >
+            <Trash2 size={18} />
+          </button>
+        )}
       </div>
     </div>
   );

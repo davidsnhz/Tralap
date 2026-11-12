@@ -1,4 +1,5 @@
 import { C } from "../theme/colors";
+import { EASE, veil } from "../theme/tokens";
 
 interface ProgressRingProps {
   pct: number;
@@ -16,7 +17,7 @@ export function ProgressRing({ pct }: ProgressRingProps) {
           cy="32"
           r={R}
           fill="none"
-          stroke="rgba(255,255,255,.15)"
+          stroke={veil(0.15)}
           strokeWidth="6"
         />
         <circle
@@ -30,8 +31,7 @@ export function ProgressRing({ pct }: ProgressRingProps) {
           strokeDasharray={CIRC}
           strokeDashoffset={CIRC * (1 - pct / 100)}
           style={{
-            transition:
-              "stroke-dashoffset .5s cubic-bezier(.22,1,.36,1), stroke .3s",
+            transition: `stroke-dashoffset .5s ${EASE.out}, stroke .3s`,
           }}
         />
       </svg>

@@ -1,27 +1,41 @@
 import { useState } from "react";
-import { Bookmark, Luggage, Plus } from "lucide-react";
+import { Bookmark, Luggage, Plus, ShieldCheck } from "lucide-react";
 import { C } from "../theme/colors";
+import { FONT, SHADOW } from "../theme/tokens";
 import type { HomeTab, Trip } from "../types";
 import { countLabel } from "../utils/text";
 import { SwipeableTripCard } from "./SwipeableTripCard";
 import { TemplateView } from "./TemplateView";
+import { EmptyText, Hint } from "./ui/Notes";
+import { SegmentedTabs, type TabOption } from "./ui/SegmentedTabs";
 
 interface HomeProps {
   trips: Trip[];
   template: string[];
   onOpen: (id: string) => void;
   onNew: () => void;
+  /** Abre «Tus datos» (copias de seguridad). */
+  onData: () => void;
+  /** Hace tiempo (o nunca) que no se guarda una copia. */
+  backupDue: boolean;
   onRename: (id: string, name: string) => void;
   onDelete: (id: string) => void;
   onTplAdd: (name: string) => boolean;
   onTplRemove: (name: string) => void;
 }
 
+const TABS: TabOption<HomeTab>[] = [
+  { id: "viajes", label: "Mis viajes", icon: Luggage },
+  { id: "plantilla", label: "Mi plantilla", icon: Bookmark },
+];
+
 export function Home({
   trips,
   template,
   onOpen,
   onNew,
+  onData,
+  backupDue,
   onRename,
   onDelete,
   onTplAdd,
@@ -29,61 +43,61 @@ export function Home({
 }: HomeProps) {
   const [homeTab, setHomeTab] = useState<HomeTab>("viajes");
 
-  const tabs: { id: HomeTab; label: string; icon: typeof Luggage }[] = [
-    { id: "viajes", label: "Mis viajes", icon: Luggage },
-    { id: "plantilla", label: "Mi plantilla", icon: Bookmark },
-  ];
-
   return (
-    <div className="anim-fade" style={{ padding: "28px 24px 30px" }}>
+    <div className="anim-fade" style={{ padding: "calc(28px + env(safe-area-inset-top)) 24px 30px" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
         <img
           src="/pwa-192x192.png"
           alt=""
           width={46}
           height={46}
-          style={{ borderRadius: "25.5%", boxShadow: "0 1px 4px rgba(89,70,56,.28)" }}
+          style={{ borderRadius: "25.5%", boxShadow: SHADOW.logo }}
         />
         <h1 className="display" style={{ margin: 0, fontSize: 30, fontWeight: 700, color: C.walnut }}>
           Tralap
         </h1>
+        <button
+          onClick={onData}
+          aria-label={backupDue ? "Tus datos: conviene guardar una copia" : "Tus datos y copias de seguridad"}
+          title="Tus datos"
+          style={{
+            marginLeft: "auto",
+            position: "relative",
+            width: 42,
+            height: 42,
+            borderRadius: 12,
+            border: `1px solid ${C.taupe}`,
+            background: C.white,
+            color: C.walnut,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+          }}
+        >
+          <ShieldCheck size={19} />
+          {backupDue && (
+            <span
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                top: 6,
+                right: 6,
+                width: 10,
+                height: 10,
+                borderRadius: 99,
+                background: C.rojo,
+                border: `2px solid ${C.white}`,
+              }}
+            />
+          )}
+        </button>
       </div>
       <p style={{ margin: "6px 0 22px", fontSize: 14, color: C.walnut }}>
         Haz la maleta sin olvidar nada.
       </p>
 
-      <div style={{ display: "flex", gap: 8, marginBottom: 18 }}>
-        {tabs.map((t) => {
-          const active = homeTab === t.id;
-          return (
-            <button
-              key={t.id}
-              onClick={() => setHomeTab(t.id)}
-              style={{
-                flex: 1,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 8,
-                padding: "12px 0",
-                borderRadius: 12,
-                cursor: "pointer",
-                fontSize: 14.5,
-                fontWeight: 700,
-                fontFamily: "'Space Grotesk', sans-serif",
-                border: `1px solid ${active ? C.walnut : C.taupe}`,
-                background: active ? C.walnut : C.white,
-                color: active ? C.white : C.mocha,
-                boxShadow: active ? "0 4px 12px rgba(89,70,56,.22)" : "none",
-                transform: active ? "translateY(-1px)" : "none",
-                transition: "all .25s cubic-bezier(.22,1,.36,1)",
-              }}
-            >
-              <t.icon size={16} /> {t.label}
-            </button>
-          );
-        })}
-      </div>
+      <SegmentedTabs tabs={TABS} value={homeTab} onChange={setHomeTab} style={{ marginBottom: 18 }} />
 
       {homeTab === "plantilla" ? (
         <TemplateView key="tpl" template={template} onAdd={onTplAdd} onRemove={onTplRemove} />
@@ -120,20 +134,13 @@ export function Home({
           ))}
 
           {trips.length === 0 ? (
-            <p
-              style={{
-                fontSize: 13.5,
-                color: C.walnut,
-                textAlign: "center",
-                padding: "18px 0 10px",
-              }}
-            >
+            <EmptyText style={{ padding: "18px 0 10px" }}>
               Aún no tienes viajes. Crea el primero y Tralap preparará tu lista.
-            </p>
+            </EmptyText>
           ) : (
-            <p style={{ fontSize: 11.5, color: C.walnut, textAlign: "center", margin: "2px 0 10px" }}>
-              Desliza una tarjeta hacia la izquierda para renombrar o eliminar
-            </p>
+            <Hint style={{ margin: "2px 0 10px" }}>
+              Desliza una tarjeta a la izquierda para renombrar o eliminar
+            </Hint>
           )}
 
           <button
@@ -152,7 +159,7 @@ export function Home({
               fontSize: 15,
               fontWeight: 700,
               color: C.walnut,
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: FONT.display,
               transition: "all .2s",
             }}
             onMouseEnter={(e) => {

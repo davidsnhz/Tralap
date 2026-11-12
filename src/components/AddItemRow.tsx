@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { C } from "../theme/colors";
+import { FONT } from "../theme/tokens";
 
 interface AddItemRowProps {
   /** Devuelve false si el elemento ya estaba en la lista. */
@@ -42,16 +43,19 @@ export function AddItemRow({
           }}
           onKeyDown={(e) => e.key === "Enter" && submit()}
           placeholder={placeholder}
+          aria-label="Nuevo elemento"
+          enterKeyHint="done"
           style={{
             flex: 1,
             minWidth: 0,
             border: "none",
             outline: "none",
             background: "transparent",
-            fontSize: 15,
-            fontFamily: "'Inter', sans-serif",
+            // 16 px como mínimo: con menos, Safari en iPhone amplía la página al escribir.
+            fontSize: 16,
+            fontFamily: FONT.body,
             color: C.walnut,
-            padding: "12px 0",
+            padding: "11px 0",
           }}
         />
         <button
@@ -65,7 +69,7 @@ export function AddItemRow({
             color: value.trim() ? C.white : C.mocha,
             fontSize: 13.5,
             fontWeight: 600,
-            fontFamily: "'Inter', sans-serif",
+            fontFamily: FONT.body,
             transition: "all .2s",
           }}
         >

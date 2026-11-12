@@ -17,7 +17,7 @@ body {
 
 body {
   margin: 0;
-  background: #f9f7f4;
+  background: theme("colors.off-white");
   overflow: hidden;
 }
 
@@ -121,7 +121,7 @@ body {
 }
 
 .tralap input::placeholder {
-  color: #8a705b;
+  color: theme("colors.mocha");
 }
 
 @media (prefers-reduced-motion: reduce) {

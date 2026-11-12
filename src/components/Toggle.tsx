@@ -1,16 +1,20 @@
 import { C } from "../theme/colors";
+import { EASE, SHADOW } from "../theme/tokens";
 
 interface ToggleProps {
   on: boolean;
   onChange: () => void;
+  /** id del texto que nombra el interruptor. */
+  labelledBy?: string;
 }
 
-export function Toggle({ on, onChange }: ToggleProps) {
+export function Toggle({ on, onChange, labelledBy }: ToggleProps) {
   return (
     <button
       onClick={onChange}
       role="switch"
       aria-checked={on}
+      aria-labelledby={labelledBy}
       style={{
         width: 46,
         height: 27,
@@ -32,9 +36,9 @@ export function Toggle({ on, onChange }: ToggleProps) {
           height: 21,
           borderRadius: "50%",
           background: C.white,
-          boxShadow: "0 1px 3px rgba(89,70,56,.25)",
+          boxShadow: SHADOW.knob,
           transform: on ? "translateX(19px)" : "translateX(0)",
-          transition: "transform .25s cubic-bezier(.22,1,.36,1)",
+          transition: `transform .25s ${EASE.out}`,
         }}
       />
     </button>

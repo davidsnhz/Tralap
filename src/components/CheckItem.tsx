@@ -1,6 +1,6 @@
-import { C } from "../theme/colors";
 import type { Item } from "../types";
 import { ItemContent } from "./ItemContent";
+import { rowSurface } from "./ui/surfaces";
 
 interface CheckItemProps {
   item: Item;
@@ -13,6 +13,8 @@ export function CheckItem({ item, onToggle, delay = 0 }: CheckItemProps) {
   return (
     <button
       onClick={onToggle}
+      role="checkbox"
+      aria-checked={item.done}
       className="item-row anim-rise"
       style={{
         animationDelay: `${delay}ms`,
@@ -23,11 +25,8 @@ export function CheckItem({ item, onToggle, delay = 0 }: CheckItemProps) {
         padding: "14px 16px",
         cursor: "pointer",
         textAlign: "left",
-        background: item.done ? C.offWhite : C.white,
-        border: `1px solid ${item.done ? "transparent" : C.taupe}`,
-        borderRadius: 14,
+        ...rowSurface(item.done),
         marginBottom: 8,
-        boxShadow: item.done ? "none" : "0 1px 2px rgba(89,70,56,.04)",
       }}
     >
       <ItemContent item={item} />

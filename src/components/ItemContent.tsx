@@ -1,6 +1,7 @@
 import { Bookmark, Check, Sparkles } from "lucide-react";
 import { ACTIVITIES } from "../data/intelligence";
 import { C } from "../theme/colors";
+import { FONT } from "../theme/tokens";
 import type { Item } from "../types";
 
 interface ItemContentProps {
@@ -39,9 +40,9 @@ export function ItemContent({ item }: ItemContentProps) {
           minWidth: 0,
           overflowWrap: "anywhere",
           fontSize: 15,
-          fontWeight: 500,
-          color: item.done ? C.mocha : C.walnut,
-          textDecoration: item.done ? "line-through" : "none",
+          fontWeight: item.done ? 400 : 500,
+          color: C.walnut,
+          textDecorationLine: item.done ? "line-through" : "none",
           textDecorationColor: C.mocha,
           transition: "color .25s",
         }}
@@ -53,12 +54,12 @@ export function ItemContent({ item }: ItemContentProps) {
           style={{
             fontSize: 13,
             fontWeight: 700,
-            color: item.done ? C.mocha : C.walnut,
+            color: C.walnut,
             background: item.done ? "transparent" : C.taupe,
             padding: "3px 10px",
             borderRadius: 99,
             transition: "all .2s",
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: FONT.display,
           }}
         >
           ×{item.qty}

@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 export type Route =
   | { name: "home" }
   | { name: "new" }
+  | { name: "data" }
   | { name: "trip"; id: string };
 
 const HOME: Route = { name: "home" };
@@ -12,6 +13,7 @@ const IN_APP = "tralap";
 
 const parseHash = (hash: string): Route => {
   if (hash === "#/nuevo") return { name: "new" };
+  if (hash === "#/datos") return { name: "data" };
   const match = /^#\/viaje\/([^/]+)$/.exec(hash);
   return match ? { name: "trip", id: match[1] } : HOME;
 };
@@ -19,6 +21,7 @@ const parseHash = (hash: string): Route => {
 const toUrl = (route: Route): string => {
   const base = window.location.pathname + window.location.search;
   if (route.name === "new") return `${base}#/nuevo`;
+  if (route.name === "data") return `${base}#/datos`;
   if (route.name === "trip") return `${base}#/viaje/${route.id}`;
   return base;
 };

@@ -1,19 +1,17 @@
 import type { Config } from "tailwindcss";
+import { C } from "./src/theme/colors.ts";
 
-/**
- * Paleta oficial de Tralap.
- * Los mismos valores se exportan para JS/TS en src/theme/colors.ts.
- */
+/* Los colores salen de src/theme/colors.ts: la paleta solo se define allí. */
 export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        walnut: "#594638",
-        mocha: "#8A705B",
-        taupe: "#D6CDC4",
-        "off-white": "#F9F7F4",
-        rojo: "#C24C34",
+        walnut: C.walnut,
+        mocha: C.mocha,
+        taupe: C.taupe,
+        "off-white": C.offWhite,
+        rojo: C.rojo,
       },
       fontFamily: {
         display: ["'Space Grotesk'", "sans-serif"],

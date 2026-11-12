@@ -3,8 +3,10 @@ import { Calendar, Pencil, Sun, Trash2 } from "lucide-react";
 import { TRIP_TYPES } from "../data/intelligence";
 import { useSwipeX } from "../hooks/useSwipeX";
 import { C } from "../theme/colors";
+import { EASE, FONT, SHADOW } from "../theme/tokens";
 import type { Trip } from "../types";
 import { countLabel } from "../utils/text";
+import { SwipeAction } from "./ui/SwipeAction";
 
 const ACTIONS_W = 148;
 
@@ -80,61 +82,23 @@ export function SwipeableTripCard({
           overflow: "hidden",
         }}
       >
-        <button
-          onClick={startRename}
-          style={{
-            width: 66,
-            border: "none",
-            cursor: "pointer",
-            borderRadius: 16,
-            background: C.mocha,
-            color: C.white,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 4,
-            fontSize: 11,
-            fontWeight: 700,
-            fontFamily: "'Inter', sans-serif",
-            opacity: dx < -30 ? 1 : 0,
-            transform: `scale(${dx < -30 ? 1 : 0.85})`,
-            transition: "opacity .2s, transform .2s",
-          }}
-        >
-          <Pencil size={17} /> Renombrar
-        </button>
-        <button
-          onClick={handleDelete}
-          style={{
-            width: 66,
-            border: "none",
-            cursor: "pointer",
-            borderRadius: 16,
-            background: C.rojo,
-            color: C.white,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 4,
-            fontSize: 11,
-            fontWeight: 700,
-            fontFamily: "'Inter', sans-serif",
-            opacity: dx < -30 ? 1 : 0,
-            transform: `scale(${dx < -30 ? 1 : 0.85})`,
-            transition: "opacity .2s, transform .2s",
-          }}
-        >
-          <Trash2 size={17} /> Eliminar
-        </button>
+        <SwipeAction icon={Pencil} label="Renombrar" onClick={startRename} visible={dx < -30} tone="secondary" size="card" />
+        <SwipeAction icon={Trash2} label="Eliminar" onClick={handleDelete} visible={dx < -30} tone="danger" size="card" />
       </div>
 
       <div
         {...handlers}
+        role={editing ? undefined : "button"}
+        tabIndex={editing ? undefined : 0}
+        onKeyDown={(e) => {
+          if (editing || e.target !== e.currentTarget) return;
+          if (e.key !== "Enter" && e.key !== " ") return;
+          e.preventDefault();
+          onOpen();
+        }}
         style={{
           transform: `translateX(${dx}px)`,
-          transition: active ? "none" : "transform .3s cubic-bezier(.22,1,.36,1)",
+          transition: active ? "none" : `transform .3s ${EASE.out}`,
           background: C.white,
           borderRadius: 18,
           padding: 18,
@@ -142,7 +106,7 @@ export function SwipeableTripCard({
           alignItems: "center",
           gap: 16,
           border: `1px solid ${C.taupe}`,
-          boxShadow: "0 2px 8px rgba(89,70,56,.05)",
+          boxShadow: SHADOW.card,
           cursor: "grab",
           userSelect: "none",
           touchAction: "pan-y",
@@ -179,7 +143,7 @@ export function SwipeableTripCard({
                 fontSize: 17,
                 fontWeight: 700,
                 color: C.walnut,
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: FONT.display,
                 letterSpacing: "-0.02em",
                 border: "none",
                 borderBottom: `2px solid ${C.mocha}`,
@@ -220,7 +184,7 @@ export function SwipeableTripCard({
                 width: `${pct}%`,
                 borderRadius: 99,
                 background: pct === 100 ? C.walnut : C.mocha,
-                transition: "width .5s cubic-bezier(.22,1,.36,1)",
+                transition: `width .5s ${EASE.out}`,
               }}
             />
           </div>

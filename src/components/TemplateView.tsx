@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Bookmark, X } from "lucide-react";
 import { C } from "../theme/colors";
 import { AddItemRow } from "./AddItemRow";
+import { EmptyText, InfoNote, Strong } from "./ui/Notes";
+import { rowSurface } from "./ui/surfaces";
 
 interface TemplateRowProps {
   name: string;
@@ -27,10 +29,7 @@ function TemplateRow({ name, onRemove, delay }: TemplateRowProps) {
           alignItems: "center",
           gap: 14,
           padding: "13px 8px 13px 16px",
-          background: C.white,
-          border: `1px solid ${C.taupe}`,
-          borderRadius: 14,
-          boxShadow: "0 1px 2px rgba(89,70,56,.04)",
+          ...rowSurface(false),
         }}
       >
         <Bookmark size={16} color={C.mocha} style={{ flexShrink: 0 }} />
@@ -39,6 +38,7 @@ function TemplateRow({ name, onRemove, delay }: TemplateRowProps) {
         </span>
         <button
           onClick={remove}
+          aria-label={`Quitar ${name} de la plantilla`}
           style={{
             width: 34,
             height: 34,
@@ -77,37 +77,15 @@ interface TemplateViewProps {
 export function TemplateView({ template, onAdd, onRemove }: TemplateViewProps) {
   return (
     <div className="anim-fade">
-      <div
-        style={{
-          display: "flex",
-          alignItems: "flex-start",
-          gap: 12,
-          padding: "14px 16px",
-          background: C.white,
-          border: `1px solid ${C.taupe}`,
-          borderRadius: 16,
-          marginBottom: 16,
-        }}
-      >
-        <Bookmark size={18} color={C.mocha} style={{ flexShrink: 0, marginTop: 2 }} />
-        <p style={{ margin: 0, fontSize: 13, color: C.mocha, lineHeight: 1.5 }}>
-          Guarda aquí lo que <strong style={{ color: C.walnut }}>siempre llevas</strong> a
-          cualquier viaje. Al crear un viaje nuevo podrás incluirlo todo de un toque, sin
-          volver a escribirlo.
-        </p>
-      </div>
+      <InfoNote icon={Bookmark} style={{ marginBottom: 16 }}>
+        Guarda aquí lo que <Strong>siempre llevas</Strong> a cualquier viaje. Al crear un viaje
+        nuevo podrás incluirlo todo de un toque, sin volver a escribirlo.
+      </InfoNote>
 
       {template.length === 0 ? (
-        <p
-          style={{
-            textAlign: "center",
-            fontSize: 13.5,
-            color: C.walnut,
-            padding: "24px 0",
-          }}
-        >
+        <EmptyText style={{ padding: "24px 0" }}>
           Tu plantilla está vacía. Añade tu primer imprescindible.
-        </p>
+        </EmptyText>
       ) : (
         template.map((name, i) => (
           <TemplateRow key={name} name={name} delay={i * 35} onRemove={() => onRemove(name)} />

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { PointerEvent } from "react";
 
 interface UseSwipeXOptions {
@@ -15,6 +15,10 @@ interface UseSwipeXOptions {
 
 interface UseSwipeXResult {
   dx: number;
+  /** true si las acciones de esta fila están a la vista. */
+  open: boolean;
+  /** Muestra las acciones sin gesto (teclado o botón). */
+  reveal: () => void;
   /** Cierra las acciones de esta fila. */
   close: () => void;
   /** true mientras el puntero arrastra: desactiva la transición CSS. */
@@ -28,10 +32,10 @@ interface UseSwipeXResult {
 }
 
 /** Movimiento (px) a partir del cual el gesto deja de ser un toque. */
-const TAP_SLOP = 8;
+export const TAP_SLOP = 8;
 
-/** Cierra la fila con las acciones abiertas: solo puede haber una a la vez. */
-let closeOpenRow: (() => void) | null = null;
+/** Fila con las acciones abiertas: solo puede haber una a la vez. */
+let openRow: { id: string; close: () => void } | null = null;
 
 /**
  * Gesto de deslizar horizontal (Pointer Events: táctil y ratón): arrastrar a la
@@ -48,7 +52,9 @@ export function useSwipeX({
   onTap,
   disabled = false,
 }: UseSwipeXOptions): UseSwipeXResult {
+  const id = useId();
   const [dx, setDx] = useState(0);
+  const [active, setActive] = useState(false);
   const drag = useRef({
     startX: 0,
     startY: 0,
@@ -62,20 +68,26 @@ export function useSwipeX({
 
   const close = useCallback((): void => {
     setDx(0);
-    if (closeOpenRow === close) closeOpenRow = null;
-  }, []);
+    if (openRow?.id === id) openRow = null;
+  }, [id]);
+
+  const reveal = useCallback((): void => {
+    if (openRow && openRow.id !== id) openRow.close();
+    setDx(-actionWidth);
+    openRow = { id, close };
+  }, [id, actionWidth, close]);
 
   useEffect(
     () => () => {
-      if (closeOpenRow === close) closeOpenRow = null;
+      if (openRow?.id === id) openRow = null;
     },
-    [close],
+    [id],
   );
 
   const onPointerDown = (e: PointerEvent<HTMLElement>): void => {
     if (disabled) return;
-    const closeOther = closeOpenRow !== close ? closeOpenRow : null;
-    closeOther?.();
+    const other = openRow && openRow.id !== id ? openRow : null;
+    other?.close();
     drag.current = {
       startX: e.clientX,
       startY: e.clientY,
@@ -83,9 +95,14 @@ export function useSwipeX({
       moved: false,
       horizontal: false,
       active: true,
-      suppressTap: closeOther !== null,
+      suppressTap: other !== null,
     };
-    e.currentTarget.setPointerCapture(e.pointerId);
+    setActive(true);
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch {
+      // Puntero ya liberado: el gesto sigue funcionando sin captura.
+    }
   };
 
   const onPointerMove = (e: PointerEvent<HTMLElement>): void => {
@@ -106,30 +123,30 @@ export function useSwipeX({
     const d = drag.current;
     if (!d.active) return;
     d.active = false;
+    setActive(false);
     if (!d.moved) {
       if (dx < -10) close();
       else if (!d.suppressTap) onTap();
       return;
     }
-    if (dx < -actionWidth / snapDivisor) {
-      setDx(-actionWidth);
-      closeOpenRow = close;
-    } else {
-      close();
-    }
+    if (dx < -actionWidth / snapDivisor) reveal();
+    else close();
   };
 
   const onPointerCancel = (): void => {
     const d = drag.current;
     if (!d.active) return;
     d.active = false;
+    setActive(false);
     setDx(d.baseDx);
   };
 
   return {
     dx,
+    open: dx < 0,
+    reveal,
     close,
-    active: drag.current.active,
+    active,
     handlers: { onPointerDown, onPointerMove, onPointerUp, onPointerCancel },
   };
 }
