@@ -31,7 +31,7 @@ export function SwipeAction({ icon: Icon, label, onClick, visible, tone, size }:
         cursor: "pointer",
         borderRadius: s.radius,
         background: tone === "danger" ? C.rojo : C.mocha,
-        color: C.white,
+        color: C.snow,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

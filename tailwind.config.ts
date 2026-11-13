@@ -7,6 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        white: C.white,
         walnut: C.walnut,
         ink: C.ink,
         mocha: C.mocha,

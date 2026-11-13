@@ -11,6 +11,8 @@ import { sanitizeTemplate, sanitizeTrips } from "./data/schema";
 import { onSaveError } from "./data/storage";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import { useRoute } from "./hooks/useRoute";
+import type { ThemeName } from "./theme/colors";
+import { applyTheme, readTheme, saveTheme } from "./theme/theme";
 import { SHADOW } from "./theme/tokens";
 import type { Item, NewTripData, PackTab, Trip } from "./types";
 import { daysBetween, normalizeName } from "./utils/text";
@@ -36,6 +38,14 @@ export default function App() {
   const [lastBackup, setLastBackup] = useState<Date | null>(readLastBackup);
   const [toast, setToast] = useState<ToastData | null>(null);
   const { route, push, replace, goHome } = useRoute();
+  const [theme, setTheme] = useState<ThemeName>(readTheme);
+
+  const toggleTheme = (): void => {
+    const next: ThemeName = theme === "dark" ? "light" : "dark";
+    applyTheme(next);
+    saveTheme(next);
+    setTheme(next);
+  };
 
   const openId = route.name === "trip" ? route.id : null;
   const openTrip = trips.find((t) => t.id === openId) ?? null;
@@ -261,6 +271,8 @@ export default function App() {
             lastBackup={lastBackup}
             onBackupSaved={backupSaved}
             onImport={importData}
+            darkMode={theme === "dark"}
+            onToggleDarkMode={toggleTheme}
             onClose={goHome}
           />
         )}

@@ -18,7 +18,7 @@ export function ProgressRing({ pct }: ProgressRingProps) {
           cy="32"
           r={R}
           fill="none"
-          stroke={C.white}
+          stroke={C.onHeader}
           strokeWidth="5"
           strokeLinecap="round"
           strokeDasharray={CIRC}
@@ -36,7 +36,7 @@ export function ProgressRing({ pct }: ProgressRingProps) {
           fontSize: 13.5,
           fontWeight: 600,
           fontVariantNumeric: "tabular-nums",
-          color: C.white,
+          color: C.onHeader,
         }}
       >
         {pct}%

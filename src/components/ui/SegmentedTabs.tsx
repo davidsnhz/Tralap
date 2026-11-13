@@ -19,8 +19,8 @@ interface SegmentedTabsProps<T extends string> {
 }
 
 const TONES = {
-  default: { track: C.mist, pill: C.walnut, active: C.white, idle: C.gray },
-  onDark: { track: veil(0.1), pill: C.white, active: C.ink, idle: veil(0.72) },
+  default: { track: C.mist, pill: C.walnut, active: C.onAccent, idle: C.gray },
+  onDark: { track: veil(0.1), pill: C.headerPill, active: C.onHeaderPill, idle: veil(0.72) },
 } as const;
 
 const PAD = 4;

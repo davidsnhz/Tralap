@@ -1,7 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
-import { C } from "./src/theme/colors.ts";
+import { THEMES } from "./src/theme/colors.ts";
+
+// Valores del tema claro: el oscuro lo aplica la app al arrancar (theme.ts).
+const C = THEMES.light;
 
 export default defineConfig({
   plugins: [

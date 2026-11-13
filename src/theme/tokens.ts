@@ -1,13 +1,11 @@
 import { C } from "./colors";
 
-const rgb = (hex: string): string =>
-  [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(",");
+/** Negro con transparencia, igual en los dos temas: sombras y el velo tras las hojas. */
+export const shade = (alpha: number): string => `rgba(0,0,0,${alpha})`;
 
-/** Negro con transparencia: sombras y el velo tras las hojas. */
-export const shade = (alpha: number): string => `rgba(${rgb(C.ink)},${alpha})`;
-
-/** Blanco con transparencia: detalles sobre la cabecera oscura del viaje. */
-export const veil = (alpha: number): string => `rgba(${rgb(C.white)},${alpha})`;
+/** Color del texto de la cabecera con transparencia: detalles sobre la cabecera del viaje. */
+export const veil = (alpha: number): string =>
+  `color-mix(in srgb, ${C.onHeader} ${Math.round(alpha * 100)}%, transparent)`;
 
 export const FONT = {
   /** Solo títulos: nombre de la app, de los viajes y de las hojas. */
@@ -48,7 +46,7 @@ export const primaryButton = (enabled = true) =>
     fontWeight: 600,
     fontFamily: FONT.body,
     background: enabled ? C.walnut : C.mist,
-    color: enabled ? C.white : C.gray,
+    color: enabled ? C.onAccent : C.gray,
     cursor: enabled ? "pointer" : "default",
     transition: "background .25s, color .25s, transform .15s",
   }) as const;

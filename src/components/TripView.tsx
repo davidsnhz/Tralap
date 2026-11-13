@@ -136,7 +136,7 @@ export function TripView({
           }}
         >
           <button onClick={onBack} aria-label="Volver a Inicio" style={headerButton}>
-            <ChevronLeft size={20} color={C.white} />
+            <ChevronLeft size={20} color={C.onHeader} />
           </button>
           <button
             onClick={() => setMenuOpen((o) => !o)}
@@ -145,7 +145,7 @@ export function TripView({
             aria-expanded={menuOpen}
             style={headerButton}
           >
-            <Ellipsis size={20} color={C.white} />
+            <Ellipsis size={20} color={C.onHeader} />
           </button>
           {menuOpen && (
             <>
@@ -214,7 +214,8 @@ export function TripView({
                   padding: "0 0 2px",
                   fontSize: 28,
                   fontWeight: 700,
-                  color: C.white,
+                  color: C.onHeader,
+                  WebkitTextStroke: "0.35px currentColor",
                   background: "transparent",
                   border: "none",
                   borderBottom: `2px solid ${veil(0.72)}`,
@@ -224,7 +225,7 @@ export function TripView({
             ) : (
               <h1
                 className="display"
-                style={{ margin: 0, fontSize: 28, lineHeight: 1.15, fontWeight: 700, color: C.white, overflowWrap: "anywhere" }}
+                style={{ margin: 0, fontSize: 28, lineHeight: 1.15, fontWeight: 700, color: C.onHeader, WebkitTextStroke: "0.35px currentColor", overflowWrap: "anywhere" }}
               >
                 {trip.name}
               </h1>
@@ -293,7 +294,7 @@ export function TripView({
                     borderRadius: 99,
                     border: "none",
                     background: editing ? C.walnut : C.mist,
-                    color: editing ? C.white : C.ink,
+                    color: editing ? C.onAccent : C.ink,
                     fontSize: 13,
                     fontWeight: 600,
                     fontFamily: FONT.body,

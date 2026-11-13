@@ -30,7 +30,7 @@ export function ItemContent({ item }: ItemContentProps) {
         }}
       >
         {item.done && (
-          <Check size={14} color={C.white} strokeWidth={3} className="anim-pop" />
+          <Check size={14} color={C.onAccent} strokeWidth={3} className="anim-pop" />
         )}
       </span>
       <span

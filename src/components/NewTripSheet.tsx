@@ -101,11 +101,11 @@ export function NewTripSheet({ onClose, onCreate, templateCount }: NewTripSheetP
                 fontFamily: FONT.body,
                 border: `1px solid ${active ? C.walnut : C.line}`,
                 background: active ? C.walnut : C.white,
-                color: active ? C.white : C.ink,
+                color: active ? C.onAccent : C.ink,
                 transition: "background .2s, border-color .2s, color .2s",
               }}
             >
-              <t.icon size={16} color={active ? C.white : C.ink} /> {t.label}
+              <t.icon size={16} color={active ? C.onAccent : C.ink} /> {t.label}
             </button>
           );
         })}
@@ -139,7 +139,7 @@ export function NewTripSheet({ onClose, onCreate, templateCount }: NewTripSheetP
                 fontWeight: 500,
                 fontFamily: FONT.body,
                 background: active ? C.walnut : C.mist,
-                color: active ? C.white : C.ink,
+                color: active ? C.onAccent : C.ink,
                 transform: active ? "scale(1.03)" : "scale(1)",
                 transition: `all .2s ${EASE.spring}`,
               }}

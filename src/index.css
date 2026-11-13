@@ -54,7 +54,7 @@ body {
 .tralap .field:focus,
 .tralap .field:focus-within {
   border-color: theme("colors.ink");
-  box-shadow: 0 0 0 3px rgb(20 20 20 / 0.08);
+  box-shadow: 0 0 0 3px color-mix(in srgb, theme("colors.ink") 10%, transparent);
 }
 
 .tralap :focus-visible {

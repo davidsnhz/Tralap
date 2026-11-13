@@ -62,7 +62,7 @@ export function Home({
           <h1
             className="display"
             // Space Grotesk no tiene un peso mayor que 700: un trazo fino lo engorda un poco.
-            style={{ margin: 0, fontSize: 28, lineHeight: 1.1, fontWeight: 700, color: C.ink, WebkitTextStroke: "0.7px currentColor" }}
+            style={{ margin: 0, fontSize: 28, lineHeight: 1.1, fontWeight: 700, color: C.ink, WebkitTextStroke: "0.35px currentColor" }}
           >
             Tralap
           </h1>

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Download, ShieldAlert, ShieldCheck, Smartphone, TriangleAlert, Upload } from "lucide-react";
+import { Download, Moon, ShieldAlert, ShieldCheck, Smartphone, TriangleAlert, Upload } from "lucide-react";
 import {
   exportBackup,
   exportRescues,
@@ -13,6 +13,7 @@ import { C } from "../theme/colors";
 import { primaryButton } from "../theme/tokens";
 import { countLabel, sinceLabel } from "../utils/text";
 import { Hint, InfoNote, Strong } from "./ui/Notes";
+import { Toggle } from "./Toggle";
 import { Sheet } from "./ui/Sheet";
 
 interface DataSheetProps {
@@ -21,6 +22,8 @@ interface DataSheetProps {
   lastBackup: Date | null;
   onBackupSaved: (date: Date) => void;
   onImport: (data: BackupData) => MergeResult;
+  darkMode: boolean;
+  onToggleDarkMode: () => void;
   onClose: () => void;
 }
 
@@ -42,6 +45,8 @@ export function DataSheet({
   lastBackup,
   onBackupSaved,
   onImport,
+  darkMode,
+  onToggleDarkMode,
   onClose,
 }: DataSheetProps) {
   const [busy, setBusy] = useState(false);
@@ -107,6 +112,24 @@ export function DataSheet({
 
   return (
     <Sheet title="Tus datos" onClose={onClose}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 12,
+          padding: "13px 16px",
+          borderRadius: 14,
+          marginBottom: 14,
+          border: `1px solid ${C.line}`,
+        }}
+      >
+        <Moon size={17} color={C.gray} style={{ flexShrink: 0 }} />
+        <span id="ajuste-modo-oscuro" style={{ flex: 1, fontSize: 14, fontWeight: 600, color: C.ink }}>
+          Modo oscuro
+        </span>
+        <Toggle on={darkMode} onChange={onToggleDarkMode} labelledBy="ajuste-modo-oscuro" />
+      </div>
+
       <InfoNote icon={Smartphone} style={{ marginBottom: 14 }}>
         Tus viajes se guardan <Strong>solo en este dispositivo</Strong>. Si borras los datos del
         navegador o cambias de móvil, se pierden. Guarda una copia de vez en cuando.

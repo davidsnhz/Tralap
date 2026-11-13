@@ -65,7 +65,7 @@ export function AddItemRow({
             padding: "9px 16px",
             cursor: value.trim() ? "pointer" : "default",
             background: value.trim() ? C.walnut : C.mist,
-            color: value.trim() ? C.white : C.gray,
+            color: value.trim() ? C.onAccent : C.gray,
             fontSize: 13.5,
             fontWeight: 600,
             fontFamily: FONT.body,
