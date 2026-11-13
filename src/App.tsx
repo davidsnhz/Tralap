@@ -212,11 +212,11 @@ export default function App() {
 
   return (
     <div
-      className="tralap flex h-full justify-center bg-taupe"
+      className="tralap flex h-full justify-center bg-mist"
       style={{ paddingLeft: "env(safe-area-inset-left)", paddingRight: "env(safe-area-inset-right)" }}
     >
       <div
-        className="relative flex h-full w-full max-w-app flex-col overflow-hidden bg-off-white"
+        className="relative flex h-full w-full max-w-app flex-col overflow-hidden bg-white"
         style={{ boxShadow: SHADOW.app }}
       >
         {/* La key reinicia el scroll al cambiar de pantalla */}

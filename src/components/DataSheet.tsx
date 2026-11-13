@@ -10,7 +10,7 @@ import {
 import { isStoragePersisted } from "../data/persist";
 import { listRescues } from "../data/storage";
 import { C } from "../theme/colors";
-import { FONT, SHADOW } from "../theme/tokens";
+import { primaryButton } from "../theme/tokens";
 import { countLabel, sinceLabel } from "../utils/text";
 import { Hint, InfoNote, Strong } from "./ui/Notes";
 import { Sheet } from "./ui/Sheet";
@@ -35,21 +35,6 @@ const restoreSummary = (r: MergeResult): string => {
   if (parts.length === 0) return "Ya tenías todo lo que hay en esta copia: no se ha añadido nada.";
   return `Restaurado: ${parts.join(" y ")}.`;
 };
-
-const buttonBase = {
-  width: "100%",
-  padding: "15px 0",
-  borderRadius: 14,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  gap: 8,
-  fontSize: 15,
-  fontWeight: 700,
-  fontFamily: FONT.display,
-  cursor: "pointer",
-  transition: "all .25s",
-} as const;
 
 export function DataSheet({
   trips,
@@ -132,15 +117,14 @@ export function DataSheet({
           padding: "13px 16px",
           borderRadius: 14,
           marginBottom: 16,
-          background: C.offWhite,
-          border: `1.5px solid ${C.taupe}`,
+          border: `1px solid ${C.line}`,
         }}
       >
-        <div style={{ fontSize: 14, fontWeight: 600, color: C.walnut }}>
+        <div style={{ fontSize: 14, fontWeight: 600, color: C.ink }}>
           {countLabel(trips.length, "viaje", "viajes")} ·{" "}
           {countLabel(template.length, "imprescindible", "imprescindibles")}
         </div>
-        <div style={{ fontSize: 12.5, color: C.walnut, marginTop: 2 }}>
+        <div style={{ fontSize: 12.5, color: C.gray, marginTop: 2 }}>
           {lastBackup
             ? `Última copia: ${sinceLabel(lastBackup)}`
             : "Aún no has guardado ninguna copia"}
@@ -150,26 +134,21 @@ export function DataSheet({
       <button
         onClick={() => void save()}
         disabled={busy}
-        style={{
-          ...buttonBase,
-          border: "none",
-          background: C.walnut,
-          color: C.white,
-          boxShadow: SHADOW.cta,
-          opacity: busy ? 0.7 : 1,
-        }}
+        className="press"
+        style={{ ...primaryButton(), opacity: busy ? 0.7 : 1 }}
       >
         <Download size={18} /> Guardar copia
       </button>
 
       <button
         onClick={() => fileInput.current?.click()}
+        className="press"
         style={{
-          ...buttonBase,
+          ...primaryButton(),
           marginTop: 10,
-          border: `1.5px solid ${C.taupe}`,
+          border: `1px solid ${C.line}`,
           background: C.white,
-          color: C.walnut,
+          color: C.ink,
         }}
       >
         <Upload size={18} /> Restaurar una copia
@@ -197,7 +176,7 @@ export function DataSheet({
             fontSize: 13.5,
             fontWeight: 600,
             lineHeight: 1.45,
-            color: message.error ? C.rojo : C.walnut,
+            color: message.error ? C.rojo : C.ink,
             textAlign: "center",
           }}
         >
@@ -214,17 +193,17 @@ export function DataSheet({
             margin: "18px 0 0",
             fontSize: 12.5,
             lineHeight: 1.45,
-            color: C.walnut,
+            color: C.gray,
           }}
         >
           {persisted ? (
             <>
-              <ShieldCheck size={16} color={C.mocha} style={{ flexShrink: 0, marginTop: 1 }} />
+              <ShieldCheck size={16} color={C.gray} style={{ flexShrink: 0, marginTop: 1 }} />
               El navegador no borrará estos datos aunque le falte espacio.
             </>
           ) : (
             <>
-              <ShieldAlert size={16} color={C.mocha} style={{ flexShrink: 0, marginTop: 1 }} />
+              <ShieldAlert size={16} color={C.gray} style={{ flexShrink: 0, marginTop: 1 }} />
               Si el navegador se queda sin espacio podría borrarlos. Instalar Tralap en la pantalla
               de inicio ayuda a protegerlos.
             </>
@@ -242,8 +221,8 @@ export function DataSheet({
               border: "none",
               background: "transparent",
               padding: 0,
-              color: C.walnut,
-              fontWeight: 700,
+              color: C.ink,
+              fontWeight: 600,
               textDecoration: "underline",
               cursor: "pointer",
             }}

@@ -17,7 +17,7 @@ body {
 
 body {
   margin: 0;
-  background: theme("colors.off-white");
+  background: theme("colors.white");
   overflow: hidden;
 }
 
@@ -26,10 +26,43 @@ body {
 }
 .tralap {
   font-family: "Inter", sans-serif;
+  color: theme("colors.ink");
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
 }
 .tralap .display {
   font-family: "Space Grotesk", sans-serif;
   letter-spacing: -0.02em;
+}
+
+/* Botones que ceden un poco al pulsarlos. */
+.tralap .press {
+  transition: transform 0.15s ease;
+}
+.tralap .press:active {
+  transform: scale(0.98);
+}
+
+/* Campos de texto: borde fino que pasa a negro al escribir. */
+.tralap .field {
+  border: 1px solid theme("colors.line");
+  background: theme("colors.white");
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.tralap .field:focus,
+.tralap .field:focus-within {
+  border-color: theme("colors.ink");
+  box-shadow: 0 0 0 3px rgb(20 20 20 / 0.08);
+}
+
+.tralap :focus-visible {
+  outline: 2px solid theme("colors.ink");
+  outline-offset: 2px;
+}
+.tralap input:focus-visible {
+  outline: none;
 }
 
 @keyframes popIn {
@@ -87,8 +120,7 @@ body {
 .item-row {
   transition:
     background 0.18s ease,
-    transform 0.15s ease,
-    box-shadow 0.18s ease;
+    transform 0.15s ease;
 }
 .item-row:active {
   transform: scale(0.985);
@@ -121,7 +153,7 @@ body {
 }
 
 .tralap input::placeholder {
-  color: theme("colors.mocha");
+  color: theme("colors.gray");
 }
 
 @media (prefers-reduced-motion: reduce) {

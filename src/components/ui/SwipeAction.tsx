@@ -38,7 +38,7 @@ export function SwipeAction({ icon: Icon, label, onClick, visible, tone, size }:
         justifyContent: "center",
         gap: s.gap,
         fontSize: s.fontSize,
-        fontWeight: 700,
+        fontWeight: 600,
         fontFamily: FONT.body,
         opacity: visible ? 1 : 0,
         transform: `scale(${visible ? 1 : 0.85})`,

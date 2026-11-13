@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { TRIP_TYPES } from "../data/intelligence";
 import { C } from "../theme/colors";
-import { EASE, FONT, SHADOW, veil } from "../theme/tokens";
+import { FONT, SHADOW, veil } from "../theme/tokens";
 import type { PackTab, Trip, TripMode } from "../types";
 import { countLabel } from "../utils/text";
 import { AddItemRow } from "./AddItemRow";
@@ -46,11 +46,11 @@ const PACK_TABS: TabOption<PackTab>[] = [
 ];
 
 const headerButton = {
-  background: veil(0.09),
+  background: veil(0.1),
   border: "none",
-  borderRadius: 12,
-  width: 38,
-  height: 38,
+  borderRadius: 99,
+  width: 40,
+  height: 40,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -67,7 +67,7 @@ const menuItem = {
   borderRadius: 10,
   background: "transparent",
   fontSize: 14.5,
-  fontWeight: 600,
+  fontWeight: 500,
   fontFamily: FONT.body,
   cursor: "pointer",
   textAlign: "left",
@@ -121,7 +121,7 @@ export function TripView({
     <div className="anim-fade">
       <div
         style={{
-          background: C.walnut,
+          background: C.espresso,
           borderRadius: "0 0 28px 28px",
           padding: "calc(20px + env(safe-area-inset-top)) 22px 22px",
         }}
@@ -160,18 +160,18 @@ export function TripView({
                 onKeyDown={(e) => e.key === "Escape" && setMenuOpen(false)}
                 style={{
                   position: "absolute",
-                  top: 44,
+                  top: 46,
                   right: 0,
                   zIndex: 6,
                   minWidth: 200,
                   padding: 6,
                   borderRadius: 14,
                   background: C.white,
-                  boxShadow: SHADOW.cta,
+                  boxShadow: SHADOW.menu,
                 }}
               >
-                <button role="menuitem" autoFocus onClick={startRename} style={{ ...menuItem, color: C.walnut }}>
-                  <Pencil size={17} color={C.mocha} /> Renombrar
+                <button role="menuitem" autoFocus onClick={startRename} style={{ ...menuItem, color: C.ink }}>
+                  <Pencil size={17} color={C.gray} /> Renombrar
                 </button>
                 <button
                   role="menuitem"
@@ -190,8 +190,8 @@ export function TripView({
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: 12 }}>
           <div style={{ flex: renaming ? 1 : undefined, minWidth: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-              <TypeIcon size={15} color={C.taupe} />
-              <span style={{ fontSize: 13, fontWeight: 600, color: C.taupe, letterSpacing: 0.3 }}>
+              <TypeIcon size={15} color={veil(0.72)} />
+              <span style={{ fontSize: 13, fontWeight: 500, color: veil(0.72) }}>
                 {tripType?.label} · {daysLabel}
               </span>
             </div>
@@ -217,16 +217,19 @@ export function TripView({
                   color: C.white,
                   background: "transparent",
                   border: "none",
-                  borderBottom: `2px solid ${C.taupe}`,
+                  borderBottom: `2px solid ${veil(0.72)}`,
                   outline: "none",
                 }}
               />
             ) : (
-              <h1 className="display" style={{ margin: 0, fontSize: 28, fontWeight: 700, color: C.white, overflowWrap: "anywhere" }}>
+              <h1
+                className="display"
+                style={{ margin: 0, fontSize: 28, lineHeight: 1.15, fontWeight: 700, color: C.white, overflowWrap: "anywhere" }}
+              >
                 {trip.name}
               </h1>
             )}
-            <p style={{ margin: "8px 0 0", fontSize: 13.5, color: C.taupe }}>
+            <p style={{ margin: "8px 0 0", fontSize: 13.5, color: veil(0.72) }}>
               {mode === "ida"
                 ? pct === 100
                   ? "¡Maleta lista!"
@@ -243,61 +246,12 @@ export function TripView({
           <ProgressRing pct={pct} />
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            marginTop: 18,
-            background: veil(0.08),
-            borderRadius: 12,
-            padding: 4,
-            position: "relative",
-          }}
-        >
-          <span
-            style={{
-              position: "absolute",
-              top: 4,
-              bottom: 4,
-              width: "calc(50% - 4px)",
-              left: mode === "ida" ? 4 : "calc(50%)",
-              background: C.mocha,
-              borderRadius: 9,
-              transition: `left .28s ${EASE.out}`,
-            }}
-          />
-          {MODES.map((m) => (
-            <button
-              key={m.id}
-              onClick={() => setMode(m.id)}
-              aria-pressed={mode === m.id}
-              style={{
-                flex: 1,
-                position: "relative",
-                zIndex: 1,
-                border: "none",
-                cursor: "pointer",
-                background: "transparent",
-                padding: "9px 0",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 7,
-                fontSize: 13,
-                fontWeight: 700,
-                fontFamily: FONT.display,
-                color: mode === m.id ? C.white : C.taupe,
-                transition: "color .25s",
-              }}
-            >
-              <m.icon size={14} /> {m.label}
-            </button>
-          ))}
-        </div>
+        <SegmentedTabs tabs={MODES} value={mode} onChange={setMode} tone="onDark" style={{ marginTop: 20 }} />
       </div>
 
       {mode === "ida" ? (
         <div key="ida" className="anim-fade">
-          <SegmentedTabs tabs={PACK_TABS} value={tab} onChange={setTab} style={{ padding: "18px 22px 10px" }} />
+          <SegmentedTabs tabs={PACK_TABS} value={tab} onChange={setTab} style={{ padding: "18px 22px 8px" }} />
 
           <div style={{ padding: "6px 22px 30px" }} key={tab}>
             <div
@@ -312,8 +266,8 @@ export function TripView({
               <p
                 style={{
                   fontSize: 12.5,
-                  color: C.walnut,
-                  fontWeight: 600,
+                  color: C.gray,
+                  fontWeight: 500,
                   margin: 0,
                   display: "flex",
                   gap: 6,
@@ -334,15 +288,15 @@ export function TripView({
                     display: "flex",
                     alignItems: "center",
                     gap: 5,
-                    minHeight: 36,
-                    padding: "0 10px",
-                    borderRadius: 10,
+                    minHeight: 34,
+                    padding: "0 12px",
+                    borderRadius: 99,
                     border: "none",
-                    background: editing ? C.walnut : "transparent",
-                    color: editing ? C.white : C.walnut,
+                    background: editing ? C.walnut : C.mist,
+                    color: editing ? C.white : C.ink,
                     fontSize: 13,
-                    fontWeight: 700,
-                    fontFamily: FONT.display,
+                    fontWeight: 600,
+                    fontFamily: FONT.body,
                     cursor: "pointer",
                     transition: "background .2s, color .2s",
                   }}

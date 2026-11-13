@@ -40,9 +40,9 @@ export function Sheet({ title, onClose, children }: SheetProps) {
         aria-labelledby={titleId}
         style={{
           background: C.white,
-          borderRadius: "24px 24px 0 0",
+          borderRadius: "28px 28px 0 0",
           width: "100%",
-          padding: "24px 24px calc(28px + env(safe-area-inset-bottom))",
+          padding: "22px 22px calc(26px + env(safe-area-inset-bottom))",
           maxHeight: "92%",
           overflowY: "auto",
           overscrollBehavior: "contain",
@@ -59,7 +59,7 @@ export function Sheet({ title, onClose, children }: SheetProps) {
           <h2
             id={titleId}
             className="display"
-            style={{ margin: 0, fontSize: 22, fontWeight: 700, color: C.walnut }}
+            style={{ margin: 0, fontSize: 22, fontWeight: 700, color: C.ink }}
           >
             {title}
           </h2>
@@ -67,18 +67,18 @@ export function Sheet({ title, onClose, children }: SheetProps) {
             onClick={onClose}
             aria-label="Cerrar"
             style={{
-              background: C.taupe,
+              background: C.mist,
               border: "none",
-              borderRadius: 10,
-              width: 32,
-              height: 32,
+              borderRadius: 99,
+              width: 36,
+              height: 36,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
             }}
           >
-            <X size={16} color={C.walnut} />
+            <X size={16} color={C.ink} />
           </button>
         </div>
         {children}

@@ -8,9 +8,12 @@ export default {
     extend: {
       colors: {
         walnut: C.walnut,
+        ink: C.ink,
         mocha: C.mocha,
-        taupe: C.taupe,
-        "off-white": C.offWhite,
+        line: C.line,
+        mist: C.mist,
+        mute: C.mute,
+        gray: C.gray,
         rojo: C.rojo,
       },
       fontFamily: {

@@ -8,7 +8,7 @@ interface InfoNoteProps {
   style?: CSSProperties;
 }
 
-/** Tarjeta blanca con un icono y una explicación breve. */
+/** Nota sobre fondo Mist con un icono y una explicación breve. */
 export function InfoNote({ icon: Icon, children, style }: InfoNoteProps) {
   return (
     <div
@@ -17,21 +17,20 @@ export function InfoNote({ icon: Icon, children, style }: InfoNoteProps) {
         alignItems: "flex-start",
         gap: 12,
         padding: "14px 16px",
-        background: C.white,
-        border: `1px solid ${C.taupe}`,
-        borderRadius: 16,
+        background: C.mist,
+        borderRadius: 14,
         ...style,
       }}
     >
-      <Icon size={18} color={C.mocha} style={{ flexShrink: 0, marginTop: 2 }} />
-      <p style={{ margin: 0, fontSize: 13, color: C.mocha, lineHeight: 1.5 }}>{children}</p>
+      <Icon size={17} color={C.gray} style={{ flexShrink: 0, marginTop: 2 }} />
+      <p style={{ margin: 0, fontSize: 13, color: C.gray, lineHeight: 1.5 }}>{children}</p>
     </div>
   );
 }
 
 /** Texto destacado dentro de una InfoNote. */
 export function Strong({ children }: { children: ReactNode }) {
-  return <strong style={{ color: C.walnut }}>{children}</strong>;
+  return <strong style={{ color: C.ink, fontWeight: 600 }}>{children}</strong>;
 }
 
 interface TextProps {
@@ -41,10 +40,18 @@ interface TextProps {
 
 /** Pista pequeña y centrada bajo una lista. */
 export function Hint({ children, style }: TextProps) {
-  return <p style={{ fontSize: 11.5, color: C.walnut, textAlign: "center", ...style }}>{children}</p>;
+  return (
+    <p style={{ fontSize: 12, color: C.gray, textAlign: "center", lineHeight: 1.45, ...style }}>
+      {children}
+    </p>
+  );
 }
 
 /** Mensaje de lista vacía. */
 export function EmptyText({ children, style }: TextProps) {
-  return <p style={{ fontSize: 13.5, color: C.walnut, textAlign: "center", ...style }}>{children}</p>;
+  return (
+    <p style={{ fontSize: 14, color: C.gray, textAlign: "center", lineHeight: 1.5, ...style }}>
+      {children}
+    </p>
+  );
 }

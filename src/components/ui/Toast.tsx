@@ -43,16 +43,16 @@ export function ToastHost({ toast, onDismiss }: ToastHostProps) {
             gap: 10,
             padding: toast.action ? "8px 8px 8px 16px" : "13px 16px",
             borderRadius: 14,
-            background: C.walnut,
+            background: C.ink,
             color: C.white,
-            boxShadow: SHADOW.cta,
+            boxShadow: SHADOW.menu,
             fontSize: 14,
             fontWeight: 500,
             lineHeight: 1.4,
           }}
         >
           {toast.tone === "error" && (
-            <TriangleAlert size={17} color={C.taupe} style={{ flexShrink: 0 }} />
+            <TriangleAlert size={17} color={C.white} style={{ flexShrink: 0 }} />
           )}
           <span style={{ flex: 1, minWidth: 0, overflowWrap: "anywhere" }}>{toast.message}</span>
           {toast.action && (
@@ -68,10 +68,10 @@ export function ToastHost({ toast, onDismiss }: ToastHostProps) {
                 border: "none",
                 borderRadius: 10,
                 background: "transparent",
-                color: C.taupe,
+                color: C.white,
                 fontSize: 14,
-                fontWeight: 700,
-                fontFamily: FONT.display,
+                fontWeight: 600,
+                fontFamily: FONT.body,
                 cursor: "pointer",
               }}
             >

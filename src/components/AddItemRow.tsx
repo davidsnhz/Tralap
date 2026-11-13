@@ -23,6 +23,7 @@ export function AddItemRow({
   return (
     <>
       <div
+        className="field"
         style={{
           display: "flex",
           alignItems: "center",
@@ -30,11 +31,9 @@ export function AddItemRow({
           marginTop: 4,
           padding: "4px 4px 4px 16px",
           borderRadius: 14,
-          border: `1.5px dashed ${C.taupe}`,
-          background: C.white,
         }}
       >
-        <Plus size={17} color={C.mocha} />
+        <Plus size={17} color={C.gray} />
         <input
           value={value}
           onChange={(e) => {
@@ -54,7 +53,7 @@ export function AddItemRow({
             // 16 px como mínimo: con menos, Safari en iPhone amplía la página al escribir.
             fontSize: 16,
             fontFamily: FONT.body,
-            color: C.walnut,
+            color: C.ink,
             padding: "11px 0",
           }}
         />
@@ -65,8 +64,8 @@ export function AddItemRow({
             borderRadius: 10,
             padding: "9px 16px",
             cursor: value.trim() ? "pointer" : "default",
-            background: value.trim() ? C.walnut : C.taupe,
-            color: value.trim() ? C.white : C.mocha,
+            background: value.trim() ? C.walnut : C.mist,
+            color: value.trim() ? C.white : C.gray,
             fontSize: 13.5,
             fontWeight: 600,
             fontFamily: FONT.body,

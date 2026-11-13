@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { Bookmark, Luggage, Plus, ShieldCheck } from "lucide-react";
+import { Bookmark, Luggage, Plus, Settings } from "lucide-react";
 import { C } from "../theme/colors";
-import { FONT, SHADOW } from "../theme/tokens";
+import { SHADOW, primaryButton } from "../theme/tokens";
 import type { HomeTab, Trip } from "../types";
-import { countLabel } from "../utils/text";
 import { SwipeableTripCard } from "./SwipeableTripCard";
 import { TemplateView } from "./TemplateView";
-import { EmptyText, Hint } from "./ui/Notes";
+import { Hint } from "./ui/Notes";
 import { SegmentedTabs, type TabOption } from "./ui/SegmentedTabs";
 
 interface HomeProps {
@@ -43,48 +42,65 @@ export function Home({
 }: HomeProps) {
   const [homeTab, setHomeTab] = useState<HomeTab>("viajes");
 
+  const newTripButton = (
+    <button onClick={onNew} className="press" style={primaryButton()}>
+      <Plus size={18} /> Nuevo viaje
+    </button>
+  );
+
   return (
-    <div className="anim-fade" style={{ padding: "calc(28px + env(safe-area-inset-top)) 24px 30px" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
+    <div className="anim-fade" style={{ padding: "calc(24px + env(safe-area-inset-top)) 22px 30px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         <img
           src="/pwa-192x192.png"
           alt=""
-          width={46}
-          height={46}
+          width={48}
+          height={48}
           style={{ borderRadius: "25.5%", boxShadow: SHADOW.logo }}
         />
-        <h1 className="display" style={{ margin: 0, fontSize: 30, fontWeight: 700, color: C.walnut }}>
-          Tralap
-        </h1>
+        <div style={{ minWidth: 0 }}>
+          <h1
+            className="display"
+            // Space Grotesk no tiene un peso mayor que 700: un trazo fino lo engorda un poco.
+            style={{ margin: 0, fontSize: 28, lineHeight: 1.1, fontWeight: 700, color: C.ink, WebkitTextStroke: "0.7px currentColor" }}
+          >
+            Tralap
+          </h1>
+          <p style={{ margin: "2px 0 0", fontSize: 13.5, color: C.gray }}>
+            Haz la maleta sin olvidar nada.
+          </p>
+        </div>
         <button
           onClick={onData}
-          aria-label={backupDue ? "Tus datos: conviene guardar una copia" : "Tus datos y copias de seguridad"}
-          title="Tus datos"
+          aria-label={backupDue ? "Ajustes: conviene guardar una copia" : "Ajustes"}
+          title="Ajustes"
+          className="press"
           style={{
             marginLeft: "auto",
+            flexShrink: 0,
             position: "relative",
             width: 42,
             height: 42,
-            borderRadius: 12,
-            border: `1px solid ${C.taupe}`,
-            background: C.white,
-            color: C.walnut,
+            borderRadius: 99,
+            border: "none",
+            background: C.mist,
+            color: C.ink,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             cursor: "pointer",
           }}
         >
-          <ShieldCheck size={19} />
+          <Settings size={19} />
           {backupDue && (
             <span
               aria-hidden="true"
               style={{
                 position: "absolute",
-                top: 6,
-                right: 6,
-                width: 10,
-                height: 10,
+                top: 4,
+                right: 4,
+                width: 11,
+                height: 11,
                 borderRadius: 99,
                 background: C.rojo,
                 border: `2px solid ${C.white}`,
@@ -93,35 +109,38 @@ export function Home({
           )}
         </button>
       </div>
-      <p style={{ margin: "6px 0 22px", fontSize: 14, color: C.walnut }}>
-        Haz la maleta sin olvidar nada.
-      </p>
 
-      <SegmentedTabs tabs={TABS} value={homeTab} onChange={setHomeTab} style={{ marginBottom: 18 }} />
+      <SegmentedTabs tabs={TABS} value={homeTab} onChange={setHomeTab} style={{ margin: "24px 0 20px" }} />
 
       {homeTab === "plantilla" ? (
         <TemplateView key="tpl" template={template} onAdd={onTplAdd} onRemove={onTplRemove} />
-      ) : (
-        <div key="viajes" className="anim-fade">
+      ) : trips.length === 0 ? (
+        <div key="vacio" className="anim-fade" style={{ textAlign: "center", padding: "36px 0 0" }}>
           <div
             style={{
+              width: 76,
+              height: 76,
+              margin: "0 auto 18px",
+              borderRadius: 99,
+              background: C.mist,
+              color: C.ink,
               display: "flex",
-              justifyContent: "space-between",
               alignItems: "center",
-              marginBottom: 14,
+              justifyContent: "center",
             }}
           >
-            <span
-              className="display"
-              style={{ fontSize: 12.5, fontWeight: 700, color: C.walnut, letterSpacing: 1.5 }}
-            >
-              MIS VIAJES
-            </span>
-            <span style={{ fontSize: 12.5, color: C.walnut, fontWeight: 500 }}>
-              {countLabel(trips.length, "activo", "activos")}
-            </span>
+            <Luggage size={32} strokeWidth={1.6} />
           </div>
-
+          <h2 className="display" style={{ margin: 0, fontSize: 21, fontWeight: 700, color: C.ink }}>
+            Aún no tienes viajes
+          </h2>
+          <p style={{ margin: "8px auto 26px", maxWidth: 260, fontSize: 14, lineHeight: 1.5, color: C.gray, textWrap: "balance" }}>
+            Crea el primero y Tralap preparará tu lista.
+          </p>
+          {newTripButton}
+        </div>
+      ) : (
+        <div key="viajes" className="anim-fade">
           {trips.map((trip, i) => (
             <SwipeableTripCard
               key={trip.id}
@@ -132,49 +151,10 @@ export function Home({
               onDelete={() => onDelete(trip.id)}
             />
           ))}
-
-          {trips.length === 0 ? (
-            <EmptyText style={{ padding: "18px 0 10px" }}>
-              Aún no tienes viajes. Crea el primero y Tralap preparará tu lista.
-            </EmptyText>
-          ) : (
-            <Hint style={{ margin: "2px 0 10px" }}>
-              Desliza una tarjeta a la izquierda para renombrar o eliminar
-            </Hint>
-          )}
-
-          <button
-            onClick={onNew}
-            style={{
-              width: "100%",
-              padding: "16px 0",
-              borderRadius: 16,
-              border: `2px dashed ${C.mocha}`,
-              background: "transparent",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 8,
-              fontSize: 15,
-              fontWeight: 700,
-              color: C.walnut,
-              fontFamily: FONT.display,
-              transition: "all .2s",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = C.white;
-              e.currentTarget.style.borderStyle = "solid";
-              e.currentTarget.style.borderColor = C.walnut;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "transparent";
-              e.currentTarget.style.borderStyle = "dashed";
-              e.currentTarget.style.borderColor = C.mocha;
-            }}
-          >
-            <Plus size={18} /> Nuevo viaje
-          </button>
+          <div style={{ marginTop: 16 }}>{newTripButton}</div>
+          <Hint style={{ margin: "14px 0 0" }}>
+            Desliza una tarjeta a la izquierda para renombrar o eliminar
+          </Hint>
         </div>
       )}
     </div>

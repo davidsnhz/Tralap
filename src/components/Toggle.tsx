@@ -21,7 +21,7 @@ export function Toggle({ on, onChange, labelledBy }: ToggleProps) {
         borderRadius: 99,
         border: "none",
         cursor: "pointer",
-        background: on ? C.mocha : C.taupe,
+        background: on ? C.walnut : C.mute,
         position: "relative",
         flexShrink: 0,
         transition: "background .25s ease",

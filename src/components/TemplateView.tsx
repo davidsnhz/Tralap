@@ -32,8 +32,8 @@ function TemplateRow({ name, onRemove, delay }: TemplateRowProps) {
           ...rowSurface(false),
         }}
       >
-        <Bookmark size={16} color={C.mocha} style={{ flexShrink: 0 }} />
-        <span style={{ flex: 1, minWidth: 0, overflowWrap: "anywhere", fontSize: 15, fontWeight: 500, color: C.walnut }}>
+        <Bookmark size={16} color={C.gray} style={{ flexShrink: 0 }} />
+        <span style={{ flex: 1, minWidth: 0, overflowWrap: "anywhere", fontSize: 15, fontWeight: 500, color: C.ink }}>
           {name}
         </span>
         <button
@@ -46,19 +46,19 @@ function TemplateRow({ name, onRemove, delay }: TemplateRowProps) {
             border: "none",
             cursor: "pointer",
             background: "transparent",
-            color: C.mocha,
+            color: C.gray,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             transition: "background .18s, color .18s",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = C.offWhite;
+            e.currentTarget.style.background = C.mist;
             e.currentTarget.style.color = C.rojo;
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.background = "transparent";
-            e.currentTarget.style.color = C.mocha;
+            e.currentTarget.style.color = C.gray;
           }}
         >
           <X size={16} />

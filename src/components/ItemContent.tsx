@@ -1,7 +1,6 @@
 import { Bookmark, Check, Sparkles } from "lucide-react";
 import { ACTIVITIES } from "../data/intelligence";
 import { C } from "../theme/colors";
-import { FONT } from "../theme/tokens";
 import type { Item } from "../types";
 
 interface ItemContentProps {
@@ -18,20 +17,20 @@ export function ItemContent({ item }: ItemContentProps) {
     <>
       <span
         style={{
-          width: 24,
-          height: 24,
-          borderRadius: 8,
+          width: 22,
+          height: 22,
+          borderRadius: 7,
           flexShrink: 0,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          border: `2px solid ${C.mocha}`,
-          background: item.done ? C.mocha : "transparent",
+          border: `1.5px solid ${item.done ? C.walnut : C.mute}`,
+          background: item.done ? C.walnut : C.white,
           transition: "background .2s, border-color .2s",
         }}
       >
         {item.done && (
-          <Check size={15} color={C.white} strokeWidth={3.5} className="anim-pop" />
+          <Check size={14} color={C.white} strokeWidth={3} className="anim-pop" />
         )}
       </span>
       <span
@@ -41,9 +40,9 @@ export function ItemContent({ item }: ItemContentProps) {
           overflowWrap: "anywhere",
           fontSize: 15,
           fontWeight: item.done ? 400 : 500,
-          color: C.walnut,
+          color: item.done ? C.gray : C.ink,
           textDecorationLine: item.done ? "line-through" : "none",
-          textDecorationColor: C.mocha,
+          textDecorationColor: C.mute,
           transition: "color .25s",
         }}
       >
@@ -52,22 +51,22 @@ export function ItemContent({ item }: ItemContentProps) {
       {item.qty !== undefined && (
         <span
           style={{
-            fontSize: 13,
-            fontWeight: 700,
-            color: C.walnut,
-            background: item.done ? "transparent" : C.taupe,
-            padding: "3px 10px",
+            fontSize: 12.5,
+            fontWeight: 600,
+            fontVariantNumeric: "tabular-nums",
+            color: C.ink,
+            background: item.done ? "transparent" : C.mist,
+            padding: "3px 9px",
             borderRadius: 99,
-            transition: "all .2s",
-            fontFamily: FONT.display,
+            transition: "background .2s",
           }}
         >
           ×{item.qty}
         </span>
       )}
-      {item.fromTemplate && !item.done && <Bookmark size={15} color={C.mocha} />}
-      {ActivityIcon && !item.done && <ActivityIcon size={15} color={C.mocha} />}
-      {item.suggested && !item.done && <Sparkles size={15} color={C.mocha} />}
+      {item.fromTemplate && !item.done && <Bookmark size={15} color={C.gray} />}
+      {ActivityIcon && !item.done && <ActivityIcon size={15} color={C.gray} />}
+      {item.suggested && !item.done && <Sparkles size={15} color={C.gray} />}
     </>
   );
 }
