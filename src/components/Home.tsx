@@ -13,7 +13,7 @@ interface HomeProps {
   template: string[];
   onOpen: (id: string) => void;
   onNew: () => void;
-  /** Abre «Tus datos» (copias de seguridad). */
+  /** Abre Ajustes (modo oscuro y copias de seguridad). */
   onData: () => void;
   /** Hace tiempo (o nunca) que no se guarda una copia. */
   backupDue: boolean;

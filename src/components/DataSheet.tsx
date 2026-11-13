@@ -111,7 +111,7 @@ export function DataSheet({
   };
 
   return (
-    <Sheet title="Tus datos" onClose={onClose}>
+    <Sheet title="Ajustes" onClose={onClose}>
       <div
         style={{
           display: "flex",

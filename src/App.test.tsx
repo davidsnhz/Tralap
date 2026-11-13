@@ -97,11 +97,11 @@ describe("Eliminar sin deslizar y deshacer", () => {
 });
 
 describe("Datos ilegibles", () => {
-  it("no se tiran: se apartan y la hoja «Tus datos» lo dice", () => {
+  it("no se tiran: se apartan y la hoja de Ajustes lo dice", () => {
     localStorage.setItem("tralap:trips", "{roto");
     window.history.replaceState(null, "", "/#/datos");
     render(<App />);
-    expect(screen.getByRole("dialog", { name: "Tus datos" })).toBeTruthy();
+    expect(screen.getByRole("dialog", { name: "Ajustes" })).toBeTruthy();
     expect(screen.getByText(/no pudo leer/)).toBeTruthy();
     const rescued = Object.keys(localStorage).filter((k) => k.startsWith("tralap:rescate:"));
     expect(rescued.map((k) => localStorage.getItem(k))).toEqual(["{roto"]);
